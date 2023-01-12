@@ -32,6 +32,7 @@ const Register = ({ onSubmit }) => {
         lastName: data.get('lastName'),
         email: data.get('email'),
         password: data.get('password'),
+        title: 'doctor',
       });
     }
   };
@@ -40,14 +41,14 @@ const Register = ({ onSubmit }) => {
     if (firstNameRef.current === '') {
       return setFirstNameError(true);
     }
-    return setFirstNameError(false);
+    setFirstNameError(false);
   };
 
   const lastNameHandler = () => {
     if (lastNameRef.current === '') {
       return setLastNameError(true);
     }
-    return setLastNameError(false);
+    setLastNameError(false);
   };
 
   const emailHandler = () => {
@@ -62,7 +63,7 @@ const Register = ({ onSubmit }) => {
     if (passwordRef.current === verifyPasswordRef.current) {
       return setPasswordVerifyError(false);
     }
-    return setPasswordVerifyError(true);
+    setPasswordVerifyError(true);
   };
 
   return (

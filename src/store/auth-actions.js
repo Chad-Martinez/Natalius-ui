@@ -1,5 +1,5 @@
 import { authActions } from './auth-slice';
-import { loginInUser } from '../services/auth-service';
+import { loginInUser, registerUser } from '../services/auth-service';
 import { uiActions } from './ui-slice';
 
 export const login = (loginData) => {
@@ -21,6 +21,37 @@ export const login = (loginData) => {
           message: error.response.data.message,
         })
       );
+    }
+  };
+};
+
+export const register = (registrationData) => {
+  return async (dispatch) => {
+    try {
+      await registerUser(registrationData);
+      dispatch(authActions.setIsRegistered());
+      dispatch(
+        uiActions.showNotification({
+          title: 'User created',
+          message: 'Please login to continue',
+        })
+      );
+    } catch (error) {
+      if (error.response.status === 422) {
+        dispatch(
+          uiActions.showNotification({
+            title: 'Registration Error',
+            message: error.response.data.data[0].msg,
+          })
+        );
+      } else {
+        dispatch(
+          uiActions.showNotification({
+            title: 'Registration Error',
+            message: 'Please try again',
+          })
+        );
+      }
     }
   };
 };

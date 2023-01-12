@@ -10,7 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../store/auth-actions';
+import { login, register } from '../store/auth-actions';
 
 function Copyright(props) {
   return (
@@ -35,21 +35,26 @@ const theme = createTheme();
 const AuthPage = () => {
   const history = useHistory();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isRegistered = useSelector((state) => state.auth.isRegistered);
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(true);
   const showLoginHandler = () => setShowLogin(!showLogin);
 
   const handleSubmit = (action, data) => {
     if (action === 'LOGIN') {
-      dispatch(login(data));
+      return dispatch(login(data));
     }
+    dispatch(register(data));
   };
 
   useEffect(() => {
+    if (isRegistered) {
+      setShowLogin(true);
+    }
     if (isLoggedIn) {
       history.push('/dashboard');
     }
-  }, [isLoggedIn, history]);
+  }, [isLoggedIn, history, isRegistered]);
 
   return (
     <ThemeProvider theme={theme}>

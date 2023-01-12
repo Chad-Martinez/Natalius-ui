@@ -12,7 +12,7 @@ export const loginInUser = (payload) => {
   return axios(config);
 };
 
-export const register = (payload) => {
+export const registerUser = (payload) => {
   const config = {
     method: 'PUT',
     url: API_HOST_PREFIX + '/auth/register',
