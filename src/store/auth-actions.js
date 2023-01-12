@@ -1,6 +1,6 @@
 import { authActions } from './auth-slice';
 import { loginInUser, registerUser } from '../services/auth-service';
-import { uiActions } from './ui-slice';
+import { toast } from 'react-toastify';
 
 export const login = (loginData) => {
   return async (dispatch) => {
@@ -14,13 +14,9 @@ export const login = (loginData) => {
       const data = response.data;
       const { token, userId } = data;
       dispatch(authActions.setLogin({ token, userId }));
+      toast.success('Login Successful!');
     } catch (error) {
-      dispatch(
-        uiActions.showNotification({
-          title: 'Error!',
-          message: error.response.data.message,
-        })
-      );
+      toast.error(error.response.data.message);
     }
   };
 };
@@ -30,27 +26,12 @@ export const register = (registrationData) => {
     try {
       await registerUser(registrationData);
       dispatch(authActions.setIsRegistered());
-      dispatch(
-        uiActions.showNotification({
-          title: 'User created',
-          message: 'Please login to continue',
-        })
-      );
+      toast.success('User created! Please login to continue');
     } catch (error) {
       if (error.response.status === 422) {
-        dispatch(
-          uiActions.showNotification({
-            title: 'Registration Error',
-            message: error.response.data.data[0].msg,
-          })
-        );
+        toast.error(error.response.data.data[0].msg);
       } else {
-        dispatch(
-          uiActions.showNotification({
-            title: 'Registration Error',
-            message: 'Please try again',
-          })
-        );
+        toast.error('Registration error. Please try again');
       }
     }
   };
