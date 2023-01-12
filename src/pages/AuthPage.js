@@ -39,7 +39,7 @@ const AuthPage = () => {
   const [showLogin, setShowLogin] = useState(true);
   const showLoginHandler = () => setShowLogin(!showLogin);
 
-  const handleSubmit = async (action, data) => {
+  const handleSubmit = (action, data) => {
     if (action === 'LOGIN') {
       dispatch(login(data));
     }
