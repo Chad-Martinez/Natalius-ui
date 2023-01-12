@@ -7,9 +7,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSelector, useDispatch } from 'react-redux';
+
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
-import { useSelector, useDispatch } from 'react-redux';
 import { login, register } from '../store/auth-actions';
 
 function Copyright(props) {
@@ -22,7 +23,7 @@ function Copyright(props) {
     >
       {'Copyright © '}
       <Link color='inherit' href='https://mui.com/'>
-        Patient App
+        Natalius
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -34,8 +35,7 @@ const theme = createTheme();
 
 const AuthPage = () => {
   const history = useHistory();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const isRegistered = useSelector((state) => state.auth.isRegistered);
+  const { isLoggedIn, isRegistered } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(true);
   const showLoginHandler = () => setShowLogin(!showLogin);
