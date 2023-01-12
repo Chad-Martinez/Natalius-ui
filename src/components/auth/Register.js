@@ -1,6 +1,7 @@
 import { Fragment, useState, useRef } from 'react';
 import { Avatar, Typography, Box, TextField, Button } from '@mui/material';
 import { AppRegistration } from '@mui/icons-material';
+import natalius from '../../assets/images/shell.png';
 import {
   validateEmailHelper,
   validatePasswordHelper,
@@ -68,9 +69,14 @@ const Register = ({ onSubmit }) => {
 
   return (
     <Fragment>
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <AppRegistration />
-      </Avatar>
+      <Box
+        component='img'
+        sx={{
+          width: 100,
+          marginBottom: 3,
+        }}
+        src={natalius}
+      />
       <Typography component='h1' variant='h5'>
         Register
       </Typography>

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
-import { Avatar, Typography, Box, TextField, Button } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Typography, Box, TextField, Button } from '@mui/material';
+import natalius from '../../assets/images/shell.png';
 
 const Login = ({ onSubmit }) => {
   const handleSubmit = async (e) => {
@@ -14,9 +14,14 @@ const Login = ({ onSubmit }) => {
 
   return (
     <Fragment>
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
-      </Avatar>
+      <Box
+        component='img'
+        sx={{
+          width: 100,
+          marginBottom: 3,
+        }}
+        src={natalius}
+      />
       <Typography component='h1' variant='h5'>
         Login
       </Typography>

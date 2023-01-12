@@ -10,7 +10,7 @@ import './App.css';
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
-    <div className='Patient App'>
+    <div className='Natalius'>
       <Switch>
         <Route path='/' exact>
           <AuthPage />
