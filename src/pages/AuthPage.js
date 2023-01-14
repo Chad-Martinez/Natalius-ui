@@ -35,7 +35,7 @@ const theme = createTheme();
 
 const AuthPage = () => {
   const history = useHistory();
-  const { isLoggedIn, isRegistered } = useSelector((state) => state.auth);
+  const { isLoggedIn, hasRegistered } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(true);
   const showLoginHandler = () => setShowLogin(!showLogin);
@@ -48,13 +48,13 @@ const AuthPage = () => {
   };
 
   useEffect(() => {
-    if (isRegistered) {
+    if (hasRegistered) {
       setShowLogin(true);
     }
     if (isLoggedIn) {
       history.push('/dashboard');
     }
-  }, [isLoggedIn, history, isRegistered]);
+  }, [isLoggedIn, history, hasRegistered]);
 
   return (
     <ThemeProvider theme={theme}>

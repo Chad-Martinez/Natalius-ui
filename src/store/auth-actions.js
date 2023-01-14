@@ -25,8 +25,10 @@ export const register = (registrationData) => {
   return async (dispatch) => {
     try {
       await registerUser(registrationData);
-      dispatch(authActions.setIsRegistered());
-      toast.success('User created! Please login to continue');
+      dispatch(authActions.setHasRegistered());
+      toast.success(
+        'Registration email sent. Please verify your email to continue'
+      );
     } catch (error) {
       if (error.response.status === 422) {
         toast.error(error.response.data.data[0].msg);

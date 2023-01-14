@@ -21,3 +21,12 @@ export const registerUser = (payload) => {
   };
   return axios(config);
 };
+
+export const verifyEmail = (verifyId) => {
+  const config = {
+    method: 'PUT',
+    url: `${API_HOST_PREFIX}/auth/verify/${verifyId}`,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  return axios(config);
+};

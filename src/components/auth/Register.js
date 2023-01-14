@@ -1,6 +1,5 @@
 import { Fragment, useState, useRef } from 'react';
-import { Avatar, Typography, Box, TextField, Button } from '@mui/material';
-import { AppRegistration } from '@mui/icons-material';
+import { Typography, Box, TextField, Button } from '@mui/material';
 import natalius from '../../assets/images/shell.png';
 import {
   validateEmailHelper,
