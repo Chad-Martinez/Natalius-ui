@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import AuthPage from './pages/AuthPage';
+import VerifyPage from './pages/VerifyPage';
 import Dashboard from './pages/DashboardPage';
 import './App.css';
 
@@ -20,6 +21,9 @@ function App() {
             <Dashboard />
           </Route>
         )}
+        <Route path='/verify/:verifyId'>
+          <VerifyPage />
+        </Route>
       </Switch>
       <ToastContainer
         position='top-right'

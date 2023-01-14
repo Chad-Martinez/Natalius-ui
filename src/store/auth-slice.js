@@ -6,7 +6,7 @@ const authSlice = createSlice({
     isLoggedIn: false,
     token: '',
     userId: '',
-    isRegistered: false,
+    hasRegistered: false,
   },
   reducers: {
     setLogin(state, action) {
@@ -14,8 +14,8 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.userId = action.payload.userId;
     },
-    setIsRegistered(state) {
-      state.isRegistered = true;
+    setHasRegistered(state) {
+      state.hasRegistered = true;
     },
   },
 });
