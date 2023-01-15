@@ -7,6 +7,9 @@ const uiSlice = createSlice({
       title: '',
       message: '',
     },
+    navigation: {
+      isDrawerOpen: false,
+    },
   },
   reducers: {
     showNotification(state, action) {
@@ -14,6 +17,9 @@ const uiSlice = createSlice({
         title: action.payload.title,
         message: action.payload.message,
       };
+    },
+    setIsDrawerOpen(state) {
+      state.navigation.isDrawerOpen = !state.navigation.isDrawerOpen;
     },
   },
 });
