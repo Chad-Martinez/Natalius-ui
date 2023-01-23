@@ -8,6 +8,7 @@ import AuthPage from './pages/AuthPage';
 import VerifyPage from './pages/VerifyPage';
 import Layout from './components/ui/Layout';
 import DashboardPage from './pages/DashboardPage';
+import PatientsPage from './pages/PatientsPage';
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -24,6 +25,9 @@ function App() {
       )}
       <Route path='/verify/:verifyId'>
         <VerifyPage />
+      </Route>
+      <Route path='/patients'>
+        <PatientsPage />
       </Route>
     </Switch>
   );

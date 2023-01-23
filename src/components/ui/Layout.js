@@ -14,7 +14,7 @@ const Layout = (props) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', height: '100%' }}>
         <CssBaseline />
         <Appbar />
         <Box

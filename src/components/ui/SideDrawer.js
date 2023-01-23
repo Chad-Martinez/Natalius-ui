@@ -1,11 +1,11 @@
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { uiActions } from '../../store/ui-slice';
-import { useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { authActions } from '../../store/auth-slice';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { List, Divider, IconButton, Toolbar } from '@mui/material';
+import { Link, List, Divider, IconButton, Toolbar } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -78,18 +78,22 @@ const SideDrawer = () => {
       </Toolbar>
       <Divider />
       <List component='nav'>
-        <ListItemButton>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary='Dashboard' />
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary='Patients' />
-        </ListItemButton>
+        <Link component={RouterLink} to='/dashboard'>
+          <ListItemButton>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary='Dashboard' />
+          </ListItemButton>
+        </Link>
+        <Link component={RouterLink} to='/patients'>
+          <ListItemButton>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary='Patients' />
+          </ListItemButton>
+        </Link>
         <ListItemButton>
           <ListItemIcon>
             <BarChartIcon />
