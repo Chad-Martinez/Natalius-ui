@@ -17,6 +17,11 @@ const authSlice = createSlice({
     setHasRegistered(state) {
       state.hasRegistered = true;
     },
+    setLogout(state) {
+      state.isLoggedIn = false;
+      state.token = '';
+      state.userId = '';
+    },
   },
 });
 

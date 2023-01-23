@@ -1,11 +1,20 @@
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { uiActions } from '../../store/ui-slice';
+import { useHistory } from 'react-router-dom';
+import { authActions } from '../../store/auth-slice';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { List, Divider, IconButton, Toolbar } from '@mui/material';
-
-import { mainListItems } from './listItems';
+import PeopleIcon from '@mui/icons-material/People';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MessageIcon from '@mui/icons-material/Message';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ListItemButton from '@mui/material/ListItemButton';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -35,12 +44,19 @@ const Drawer = styled(MuiDrawer, {
 
 const SideDrawer = () => {
   const drawerwidth = 240;
+  const history = useHistory();
   const dispatch = useDispatch();
   const open = useSelector((state) => state.ui.navigation.isDrawerOpen);
 
   const toggleDrawer = () => {
     dispatch(uiActions.setIsDrawerOpen());
   };
+
+  const logoutHandler = () => {
+    dispatch(authActions.setLogout());
+    history.push('/');
+  };
+
   return (
     <Drawer
       variant='permanent'
@@ -61,7 +77,44 @@ const SideDrawer = () => {
         </IconButton>
       </Toolbar>
       <Divider />
-      <List component='nav'>{mainListItems}</List>
+      <List component='nav'>
+        <ListItemButton>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary='Dashboard' />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary='Patients' />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary='Reports' />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <MessageIcon />
+          </ListItemIcon>
+          <ListItemText primary='Messages' />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <AccountCircleIcon />
+          </ListItemIcon>
+          <ListItemText primary='Account' />
+        </ListItemButton>
+        <ListItemButton onClick={logoutHandler}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary='Logout' />
+        </ListItemButton>
+      </List>
     </Drawer>
   );
 };
