@@ -11,8 +11,10 @@ import {
   TableContainer,
   Table,
   TableHead,
+  Link,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -55,6 +57,10 @@ const PATIENTS = [
   },
 ];
 
+// remove stack code
+// refactor table to its own table component
+// add a stick header to the table
+
 const PatientsPage = () => {
   const mappedPatients = PATIENTS.map((patient) => (
     <TableRow
@@ -93,14 +99,16 @@ const PatientsPage = () => {
         <Typography marginTop={2} component='h1' variant='h4' color='primary'>
           Patient's Page
         </Typography>
-        <Button
-          sx={{
-            marginY: 2,
-          }}
-          variant='contained'
-        >
-          Add Patient
-        </Button>
+        <Link component={RouterLink} to='/patients/patient-form'>
+          <Button
+            sx={{
+              marginY: 2,
+            }}
+            variant='contained'
+          >
+            Add Patient
+          </Button>
+        </Link>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label='simple table'>
