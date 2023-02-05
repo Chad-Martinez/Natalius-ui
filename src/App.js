@@ -10,6 +10,7 @@ import Layout from './components/ui/Layout';
 import DashboardPage from './pages/DashboardPage';
 import PatientsPage from './pages/PatientsPage';
 import PatientForm from './components/forms/PatientForm';
+import PatientPage from './pages/PatientPage';
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -29,6 +30,9 @@ function App() {
       </Route>
       <Route path='/patients' exact>
         <PatientsPage />
+      </Route>
+      <Route path='/patients/patient/:patientId'>
+        <PatientPage />
       </Route>
       <Route path='/patients/patient-form'>
         <PatientForm />

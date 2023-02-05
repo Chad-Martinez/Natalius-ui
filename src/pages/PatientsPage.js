@@ -14,7 +14,12 @@ import {
   Link,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useCallback, useEffect } from 'react';
+import PatientListItem from '../components/patient/PatientListItem';
 import { Link as RouterLink } from 'react-router-dom';
+import { getPatients } from '../services/patient-service';
+import { useSelector, useDispatch } from 'react-redux';
+import { loadPatients, loadPatientById } from '../store/patient-actions';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -62,24 +67,34 @@ const PATIENTS = [
 // add a stick header to the table
 
 const PatientsPage = () => {
-  const mappedPatients = PATIENTS.map((patient) => (
-    <TableRow
-      key={patient.id}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-    >
-      <TableCell component='th' scope='row'>
-        {patient.fullName}
-      </TableCell>
-      <TableCell align='right'>{patient.dob}</TableCell>
-      <TableCell align='right'>{patient.height}</TableCell>
-      <TableCell align='right'>{patient.weight}</TableCell>
-      <TableCell align='right'>
-        <Button variant='contained' size='small'>
-          View
-        </Button>
-      </TableCell>
-    </TableRow>
-  ));
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const patientsList = useSelector((state) => state.patients.patientsList);
+
+  const mapPatientListItems = (patient) => {
+    return (
+      <PatientListItem
+        key={patient._id}
+        patient={patient}
+        onGetPatientRecord={loadPatientById}
+      />
+    );
+  };
+
+  const mappedPatients = patientsList.map(mapPatientListItems);
+
+  const getAllPatients = useCallback(async () => {
+    try {
+      dispatch(loadPatients(token));
+    } catch (error) {
+      console.log('ERROR ', error);
+    }
+  }, [token, dispatch]);
+
+  useEffect(() => {
+    getAllPatients();
+  }, []);
+
   return (
     <Container
       component='main'
