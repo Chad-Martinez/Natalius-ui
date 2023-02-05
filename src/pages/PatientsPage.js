@@ -13,54 +13,22 @@ import {
   TableHead,
   Link,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+// import { styled } from '@mui/material/styles';
 import { useCallback, useEffect } from 'react';
 import PatientListItem from '../components/patient/PatientListItem';
 import { Link as RouterLink } from 'react-router-dom';
-import { getPatients } from '../services/patient-service';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadPatients, loadPatientById } from '../store/patient-actions';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'left',
-  display: 'flex',
-  justifyContent: 'space-between',
-  color: theme.palette.text.secondary,
-}));
-
-const PATIENTS = [
-  {
-    id: '1',
-    fullName: 'James Dunson',
-    dob: '12/01/2000',
-    height: `5'10"`,
-    weight: '210',
-  },
-  {
-    id: '2',
-    fullName: 'Francis Smith',
-    dob: '12/01/2000',
-    height: `5'10"`,
-    weight: '210',
-  },
-  {
-    id: '3',
-    fullName: 'Hurty McGurty',
-    dob: '12/01/2000',
-    height: `5'10"`,
-    weight: '210',
-  },
-  {
-    id: '4',
-    fullName: 'Samson Gloomy',
-    dob: '12/01/2000',
-    height: `5'10"`,
-    weight: '210',
-  },
-];
+// const Item = styled(Paper)(({ theme }) => ({
+//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//   ...theme.typography.body2,
+//   padding: theme.spacing(1),
+//   textAlign: 'left',
+//   display: 'flex',
+//   justifyContent: 'space-between',
+//   color: theme.palette.text.secondary,
+// }));
 
 // remove stack code
 // refactor table to its own table component
@@ -72,13 +40,7 @@ const PatientsPage = () => {
   const patientsList = useSelector((state) => state.patients.patientsList);
 
   const mapPatientListItems = (patient) => {
-    return (
-      <PatientListItem
-        key={patient._id}
-        patient={patient}
-        onGetPatientRecord={loadPatientById}
-      />
-    );
+    return <PatientListItem key={patient._id} patient={patient} />;
   };
 
   const mappedPatients = patientsList.map(mapPatientListItems);
@@ -87,7 +49,7 @@ const PatientsPage = () => {
     try {
       dispatch(loadPatients(token));
     } catch (error) {
-      console.log('ERROR ', error);
+      console.log('LOAD PATIENTS ERROR ', error);
     }
   }, [token, dispatch]);
 

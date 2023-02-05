@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { TableRow, TableCell, Button } from '@mui/material';
-const PatientListItem = ({ onGetPatientRecord, patient }) => {
+const PatientListItem = ({ patient }) => {
   const history = useHistory();
   const viewPatientHandler = () => {
     history.push(`/patients/patient/${patient._id}`);
