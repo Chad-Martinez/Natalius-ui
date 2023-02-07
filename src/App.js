@@ -9,8 +9,8 @@ import VerifyPage from './pages/VerifyPage';
 import Layout from './components/ui/Layout';
 import DashboardPage from './pages/DashboardPage';
 import PatientsPage from './pages/PatientsPage';
-import PatientForm from './components/forms/PatientForm';
 import PatientPage from './pages/PatientPage';
+import PatientFormPage from './pages/PatientFormPage';
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -35,7 +35,7 @@ function App() {
         <PatientPage />
       </Route>
       <Route path='/patients/patient-form'>
-        <PatientForm />
+        <PatientFormPage />
       </Route>
     </Switch>
   );
