@@ -1,7 +1,16 @@
 import { TextField } from '@mui/material';
 import { useController } from 'react-hook-form';
 
-const InputField = ({ control, name, rules, autoFocus = false, label }) => {
+const InputField = ({
+  control,
+  name,
+  rules,
+  autoFocus = false,
+  label,
+  isRequired,
+  type,
+  inputProps,
+}) => {
   const { field, fieldState } = useController({
     name,
     control,
@@ -9,12 +18,14 @@ const InputField = ({ control, name, rules, autoFocus = false, label }) => {
   });
   return (
     <TextField
-      required
+      required={isRequired}
+      type={type ? type : ''}
       fullWidth
       value={field.value || ''}
       id={field.name}
       label={label}
       name={field.name}
+      inputProps={inputProps ? inputProps : {}}
       onChange={field.onChange}
       autoFocus={autoFocus}
       error={fieldState.invalid}

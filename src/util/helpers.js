@@ -22,6 +22,33 @@ export const validatePasswordHelper = (password) => {
   return isValidPassword;
 };
 
+export const ETHNICITIES = [
+  {
+    id: 'E1',
+    item: 'American Indian or Alaska Native',
+  },
+  {
+    id: 'E2',
+    item: 'Asian',
+  },
+  {
+    id: 'E3',
+    item: 'Black or African American',
+  },
+  {
+    id: 'E4',
+    item: 'Hispanic or Latino',
+  },
+  {
+    id: 'E5',
+    item: 'Native Hawaiian or Pacific Islander',
+  },
+  {
+    id: 'E6',
+    item: 'White',
+  },
+];
+
 export const US_STATES = [
   {
     id: 'AL',

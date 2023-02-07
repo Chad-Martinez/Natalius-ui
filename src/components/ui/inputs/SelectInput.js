@@ -7,7 +7,15 @@ import {
 } from '@mui/material';
 import { useController } from 'react-hook-form';
 
-const SelectInput = ({ control, name, rules, listArray, label }) => {
+const SelectInput = ({
+  control,
+  name,
+  rules,
+  listArray,
+  label,
+  isRequired,
+  errorMessage,
+}) => {
   const { field, fieldState } = useController({
     control,
     name,
@@ -21,7 +29,7 @@ const SelectInput = ({ control, name, rules, listArray, label }) => {
     );
   });
   return (
-    <FormControl fullWidth error={fieldState.invalid}>
+    <FormControl fullWidth error={fieldState.invalid} required={isRequired}>
       <InputLabel>{label}</InputLabel>
       <Select
         id={name}
@@ -32,7 +40,7 @@ const SelectInput = ({ control, name, rules, listArray, label }) => {
       >
         {itemsList}
       </Select>
-      <FormHelperText>{fieldState.invalid && 'Select a state'}</FormHelperText>
+      <FormHelperText>{fieldState.invalid && errorMessage}</FormHelperText>
     </FormControl>
   );
 };
