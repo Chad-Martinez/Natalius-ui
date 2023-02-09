@@ -7,6 +7,7 @@ import { Avatar, Grid, styled, Paper } from '@mui/material';
 import defaultAvatar from '../assets/images/avatar-placeholder.webp';
 import PatientProfile from '../components/patient/PatientProfile';
 import Vitals from '../components/patient/Vitals';
+import Diagnoses from '../components/patient/Diagnoses';
 
 // const Item = styled(Paper)(({ theme }) => ({
 //   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,11 +29,9 @@ const PatientPage = () => {
     <>
       <Grid
         container
-        // spacing={1}
         padding={3}
         sx={{
           backgroundColor: 'white',
-          // flexGrow: 1,
           height: 'auto',
           overflow: 'auto',
         }}
@@ -59,6 +58,7 @@ const PatientPage = () => {
         </Grid>
         <PatientProfile patient={patient} />
         <Vitals patient={patient} />
+        <Diagnoses />
       </Grid>
     </>
   );

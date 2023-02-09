@@ -6,7 +6,7 @@ const Vitals = () => {
     <Grid container xs={12} marginTop={2} item>
       <Grid xs={12} item>
         <Box marginY={2} sx={{ width: '100%' }}>
-          <Typography variant='h4' fontSize={34} align='center' color='primary'>
+          <Typography variant='h4' fontSize={34} align='left' color='primary'>
             Vitals as of 2/2/23
           </Typography>
         </Box>

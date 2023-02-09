@@ -34,7 +34,7 @@ function App() {
       <Route path='/patients/patient/:patientId'>
         <PatientPage />
       </Route>
-      <Route path='/patients/patient-form'>
+      <Route path='/patients/patient/patient-form'>
         <PatientFormPage />
       </Route>
     </Switch>

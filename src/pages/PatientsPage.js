@@ -76,7 +76,7 @@ const PatientsPage = () => {
         <Typography marginTop={2} component='h1' variant='h4' color='primary'>
           Patient's Page
         </Typography>
-        <Link component={RouterLink} to='/patients/patient-form'>
+        <Link component={RouterLink} to='/patients/patient/patient-form'>
           <Button
             sx={{
               marginY: 2,
