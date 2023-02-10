@@ -5,24 +5,33 @@ const API_HOST_PREFIX = 'http://localhost:8080';
 export const addDiagnoses = (payload) => {
   const config = {
     method: 'POST',
-    url: API_HOST_PREFIX + '/diagnosis/add',
+    url: API_HOST_PREFIX + '/diagnoses/add',
     data: payload,
     headers: { 'Content-Type': 'application/json' },
   };
   return axios(config);
 };
 
-export const getDiagonses = (token) => {
-  const payload = { currentPage: 1, patientsPerPage: 10 };
+export const getDiagnoses = (patientId) => {
   const config = {
     method: 'GET',
-    url: API_HOST_PREFIX + '/patient/diagnoses/list',
-    data: payload,
-    crossdomain: true,
+    url: API_HOST_PREFIX + `/diagnoses/list/${patientId}`,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow': '*',
-      // 'Authorization': 'Bearer' + token,
+    },
+  };
+  return axios(config);
+};
+
+export const updateDiagnoses = (payload) => {
+  const config = {
+    method: 'PUT',
+    data: payload,
+    url: API_HOST_PREFIX + `/diagnoses/update`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow': '*',
     },
   };
   return axios(config);

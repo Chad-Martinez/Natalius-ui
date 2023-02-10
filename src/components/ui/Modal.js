@@ -29,17 +29,17 @@ function ConfirmDiagnoses({ onClose, open, diagnoses, onSubmit }) {
         Confirm Diagnoses Selections
       </DialogTitle>
       <Container disableGutters={true}>
-        {diagnoses.map(({ key, diagnosis }) => (
+        {diagnoses.map((diagnosis) => (
           <Box
             display={'block'}
             sx={{
               height: '45px',
             }}
             margin={2}
-            key={key}
+            key={diagnosis._id}
           >
             <Chip
-              label={diagnosis}
+              label={diagnosis.name}
               variant='outlined'
               color='primary'
               sx={{
@@ -66,7 +66,7 @@ function ConfirmDiagnoses({ onClose, open, diagnoses, onSubmit }) {
             }}
             onClick={handleClose}
           >
-            Go Back
+            Cancel
           </Button>
           <Button variant='contained' onClick={submitHandler}>
             Confirm
