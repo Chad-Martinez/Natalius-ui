@@ -1,25 +1,43 @@
-import { Fragment, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { Box, Button, Grid, TextField, Autocomplete } from '@mui/material';
 import { useState } from 'react';
 import ModalPopUp from '../ui/Modal';
-import DiagnosesList from '../patient/DiagnosesList';
-import { addDiagnoses } from '../../services/diagnosis-service';
+import EditDiagnosesList from './EditDiagnosesList';
+import { useDispatch } from 'react-redux';
+import {
+  addNewPatientDiagnoses,
+  updatePatientDiagnoses,
+} from '../../store/diagnoses-actions';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 
-const PatientDiagnosesForm = () => {
+const EditDiagnosesForm = ({
+  patientId,
+  diagnoses,
+  onShowForm,
+  diagnosesId,
+}) => {
+  const dispatch = useDispatch();
   const inputRef = useRef();
   const [inputValue, setInputValue] = useState();
   const [conditions, setConditions] = useState([]);
-  const [diagnoses, setDiagnoses] = useState([]);
+  const [newDiagnoses, setNewDiagnoses] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { _id: patientId } = useSelector((state) => state.patients.patient);
+
+  useEffect(() => {
+    setNewDiagnoses(diagnoses);
+  }, [diagnoses]);
+
+  const fetchDiagnosesHandler = async (value) => {
+    const response = await fetch(
+      `https://clinicaltables.nlm.nih.gov/api/conditions/v3/search?terms=${value}&df=primary_name,info_link_data`
+    );
+    return await response.json();
+  };
 
   const searchDiagnosisHandler = async (e) => {
-    const response = await fetch(
-      `https://clinicaltables.nlm.nih.gov/api/conditions/v3/search?terms=${e.target.value}`
-    );
-    const conditionsList = await response.json();
+    const conditionsList = await fetchDiagnosesHandler(e.target.value);
+
     const refactoredConditionsList = conditionsList[3].map((conditions) => {
       return conditions[0];
     });
@@ -36,43 +54,70 @@ const PatientDiagnosesForm = () => {
     return 0;
   };
 
-  const diagnosisAddHandler = (e) => {
+  const addDiagnosisHandler = async (e) => {
     e.preventDefault();
+    const diagnosisResult = await fetchDiagnosesHandler(inputValue);
+
+    const [diagnosis, infoLink] = diagnosisResult[3][0];
+    const match = newDiagnoses.find(({ name }) => {
+      return name === diagnosis;
+    });
+
+    if (match) {
+      setInputValue('');
+      setConditions([]);
+      inputRef.current.focus();
+      return toast.error('Diagnoses already exists');
+    }
+    const link = infoLink.split(',');
     const key = Math.random().toString().substring(2, 8);
+
     const addedDiagnosis = {
-      key,
-      diagnosis: inputValue,
+      _id: key,
+      createdDate: dayjs(Date.now()),
+      name: diagnosis,
+      link: link[0],
     };
-    const sortedDiagnoses = [...diagnoses, addedDiagnosis];
+
+    const sortedDiagnoses = [...newDiagnoses, addedDiagnosis];
+
     if (sortedDiagnoses.length > 1) {
       sortedDiagnoses.sort(sortDiagnoses);
     }
-    setDiagnoses(sortedDiagnoses);
+
+    setNewDiagnoses(sortedDiagnoses);
     setInputValue('');
     setConditions([]);
     inputRef.current.focus();
   };
 
   const deleteDiagnosisHandler = (diagnosisId) => {
-    const diagnosisIndex = diagnoses.findIndex((diagnosis) => {
-      return diagnosis.key === diagnosisId;
+    const diagnosisIndex = newDiagnoses.findIndex((diagnosis) => {
+      return diagnosis._id === diagnosisId;
     });
-    const newDiagnosesArray = [...diagnoses];
+    const newDiagnosesArray = [...newDiagnoses];
     newDiagnosesArray.splice(diagnosisIndex, 1);
-    setDiagnoses(newDiagnosesArray);
+    setNewDiagnoses(newDiagnosesArray);
   };
 
   const submitDiagnosesHandler = async () => {
-    try {
-      await addDiagnoses({ diagnoses: diagnoses, patientId: patientId });
-      toast.success('Diagnoses Updated');
-    } catch (error) {
-      toast.error('Error Updating Diagnoses. Try again');
+    const payload = { diagnoses: newDiagnoses, patientId };
+    if (diagnosesId) {
+      payload['diagnosesId'] = diagnosesId;
+      dispatch(updatePatientDiagnoses(payload));
+    } else {
+      dispatch(addNewPatientDiagnoses(payload));
     }
+    onShowForm();
   };
 
   const modalHandler = () => {
     setModalIsOpen(!modalIsOpen);
+  };
+
+  const cancelHandler = () => {
+    setNewDiagnoses(diagnoses);
+    onShowForm();
   };
 
   return (
@@ -81,7 +126,7 @@ const PatientDiagnosesForm = () => {
         open={modalIsOpen}
         onSubmitDiagnoses={submitDiagnosesHandler}
         onClose={modalHandler}
-        diagnoses={diagnoses}
+        diagnoses={newDiagnoses}
         onSubmit={submitDiagnosesHandler}
       />
       <Box component='form'>
@@ -123,7 +168,7 @@ const PatientDiagnosesForm = () => {
                   width: '100%',
                 }}
                 type='submit'
-                onClick={diagnosisAddHandler}
+                onClick={addDiagnosisHandler}
                 variant='contained'
                 disabled={!inputValue}
               >
@@ -132,14 +177,40 @@ const PatientDiagnosesForm = () => {
             </Box>
           </Grid>
         </Grid>
-        <DiagnosesList
-          diagnoses={diagnoses}
+        <EditDiagnosesList
+          newDiagnoses={newDiagnoses}
           onOpenModal={modalHandler}
           onDeleteDiagnosis={deleteDiagnosisHandler}
         />
+        <Box
+          sx={{
+            display: 'flex',
+            marginY: 3,
+            justifyContent: 'end',
+            height: '45px',
+          }}
+        >
+          <Button
+            type='button'
+            variant='outlined'
+            sx={{
+              marginRight: 1,
+            }}
+            onClick={cancelHandler}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={modalHandler}
+            variant='contained'
+            disabled={diagnoses === newDiagnoses}
+          >
+            Submit
+          </Button>
+        </Box>
       </Box>
     </Fragment>
   );
 };
 
-export default PatientDiagnosesForm;
+export default EditDiagnosesForm;

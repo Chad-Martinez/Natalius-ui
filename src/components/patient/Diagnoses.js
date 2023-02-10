@@ -1,9 +1,38 @@
-import { useState } from 'react';
-import { Grid, Box, Typography, Button, Collapse } from '@mui/material';
-import PatientDiagnosesForm from '../forms/PatientDiagnosesForm';
+import { useState, useEffect } from 'react';
+import {
+  Grid,
+  Box,
+  Typography,
+  Button,
+  Collapse,
+  Paper,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableContainer,
+  Table,
+  TableHead,
+} from '@mui/material';
+import { loadDiagnosesByPatient } from '../../store/diagnoses-actions';
+import { useDispatch, useSelector } from 'react-redux';
+import EditDiagnosesForm from '../forms/EditDiagnosesForm';
+import DiagnosesListItem from './DiagnosesListItem';
 
-const Diagnoses = () => {
+const Diagnoses = ({ patientId }) => {
+  const dispatch = useDispatch();
+  const diagnoses = useSelector((state) => state.diagnoses.diagnoses);
+  const diagnosesId = useSelector((state) => state.diagnoses.id);
   const [openForm, setOpenForm] = useState(false);
+
+  useEffect(() => {
+    dispatch(loadDiagnosesByPatient(patientId));
+  }, []);
+
+  const mapDiagnoses = (diagnosis) => {
+    return <DiagnosesListItem key={diagnosis._id} diagnosis={diagnosis} />;
+  };
+
+  const mappedDiagnoses = diagnoses.length > 0 && diagnoses.map(mapDiagnoses);
 
   const showDiagnosesFormHandler = () => {
     setOpenForm(!openForm);
@@ -34,13 +63,35 @@ const Diagnoses = () => {
             type='button'
             onClick={showDiagnosesFormHandler}
           >
-            {!openForm ? 'Add' : 'Close'}
+            {diagnoses.length > 0 ? 'Edit' : 'Add'}
           </Button>
         </Box>
       </Grid>
       <Grid xs={12} item>
         <Collapse in={openForm}>
-          <PatientDiagnosesForm />
+          <EditDiagnosesForm
+            diagnosesId={diagnosesId}
+            patientId={patientId}
+            diagnoses={diagnoses}
+            onShowForm={showDiagnosesFormHandler}
+          />
+        </Collapse>
+      </Grid>
+      <Grid xs={12} item>
+        <Collapse in={!openForm}>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Diagnosis</TableCell>
+                  <TableCell align='right'>Provider</TableCell>
+                  <TableCell align='right'>Onset Date</TableCell>
+                  <TableCell align='right'>Link</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>{mappedDiagnoses}</TableBody>
+            </Table>
+          </TableContainer>
         </Collapse>
       </Grid>
     </Grid>

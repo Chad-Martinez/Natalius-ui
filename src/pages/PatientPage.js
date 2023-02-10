@@ -58,7 +58,7 @@ const PatientPage = () => {
         </Grid>
         <PatientProfile patient={patient} />
         <Vitals patient={patient} />
-        <Diagnoses />
+        <Diagnoses patientId={patientId} />
       </Grid>
     </>
   );
