@@ -12,8 +12,9 @@ export const login = (loginData) => {
         );
       }
       const data = response.data;
-      const { token, userId } = data;
-      dispatch(authActions.setLogin({ token, userId }));
+      console.log('RETURNED USER DATA ', data);
+      const { accessToken, refreshToken, user } = data;
+      dispatch(authActions.setLogin({ accessToken, refreshToken, user }));
       toast.success('Login Successful!');
     } catch (error) {
       toast.error(error.response.data.message);

@@ -4,15 +4,17 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     isLoggedIn: false,
-    token: '',
-    userId: '',
+    accessToken: '',
+    refreshToken: '',
+    user: {},
     hasRegistered: false,
   },
   reducers: {
     setLogin(state, action) {
       state.isLoggedIn = true;
-      state.token = action.payload.token;
-      state.userId = action.payload.userId;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.user = action.payload.user;
     },
     setHasRegistered(state) {
       state.hasRegistered = true;
