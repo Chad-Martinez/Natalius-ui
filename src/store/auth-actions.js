@@ -11,10 +11,8 @@ export const login = (loginData) => {
           'Could not authenticate user. Please try again or create an account'
         );
       }
-      const data = response.data;
-      console.log('RETURNED USER DATA ', data);
-      const { accessToken, refreshToken, user } = data;
-      dispatch(authActions.setLogin({ accessToken, refreshToken, user }));
+      const userId = response.data;
+      dispatch(authActions.setLogin(userId));
       toast.success('Login Successful!');
     } catch (error) {
       toast.error(error.response.data.message);

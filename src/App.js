@@ -1,9 +1,13 @@
-import { useSelector } from 'react-redux';
-import 'react-toastify/dist/ReactToastify.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import { Fragment, useEffect } from 'react';
+import { isExpired, decodeToken } from 'react-jwt';
 import { ToastContainer } from 'react-toastify';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+
 import AuthPage from './pages/AuthPage';
 import VerifyPage from './pages/VerifyPage';
 import Layout from './components/ui/Layout';
@@ -11,9 +15,23 @@ import DashboardPage from './pages/DashboardPage';
 import PatientsPage from './pages/PatientsPage';
 import PatientPage from './pages/PatientPage';
 import PatientFormPage from './pages/PatientFormPage';
+import { authActions } from './store/auth-slice';
 
 function App() {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [cookies] = useCookies();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const expiredToken = isExpired(cookies.RT);
+  const token = decodeToken(cookies.RT);
+
+  useEffect(() => {
+    if (!expiredToken) {
+      dispatch(authActions.setLogin(token.userId));
+    } else {
+      history.push('/');
+    }
+  }, [expiredToken, token, dispatch, history]);
 
   let routes = (
     <Switch>
@@ -21,21 +39,27 @@ function App() {
         <AuthPage />
       </Route>
       {isLoggedIn && (
-        <Route path='/dashboard' exact>
-          <DashboardPage />
-        </Route>
+        <Fragment>
+          <Route path='/dashboard' exact>
+            <DashboardPage />
+          </Route>
+
+          <Route path='/verify/:verifyId'>
+            <VerifyPage />
+          </Route>
+          <Route path='/patients' exact>
+            <PatientsPage />
+          </Route>
+          <Route path='/patients/patient/:patientId'>
+            <PatientPage />
+          </Route>
+          <Route path='/patients/patient/patient-form'>
+            <PatientFormPage />
+          </Route>
+        </Fragment>
       )}
-      <Route path='/verify/:verifyId'>
-        <VerifyPage />
-      </Route>
-      <Route path='/patients' exact>
-        <PatientsPage />
-      </Route>
-      <Route path='/patients/patient/:patientId'>
-        <PatientPage />
-      </Route>
-      <Route path='/patients/patient/patient-form'>
-        <PatientFormPage />
+      <Route path='*'>
+        <Redirect to='/' />
       </Route>
     </Switch>
   );
