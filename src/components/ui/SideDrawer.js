@@ -15,6 +15,8 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ListItemButton from '@mui/material/ListItemButton';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useCookies } from 'react-cookie';
+import { invalidateRefreshToken } from '../../services/token-service';
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -43,18 +45,23 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideDrawer = () => {
+  const [removeCookie] = useCookies();
   const drawerwidth = 240;
   const history = useHistory();
   const dispatch = useDispatch();
   const open = useSelector((state) => state.ui.navigation.isDrawerOpen);
+  const userId = useSelector((state) => state.auth.userId);
 
   const toggleDrawer = () => {
     dispatch(uiActions.setIsDrawerOpen());
   };
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     dispatch(authActions.setLogout());
+    removeCookie('RT');
+    removeCookie('AT');
     history.push('/');
+    await invalidateRefreshToken(userId);
   };
 
   return (

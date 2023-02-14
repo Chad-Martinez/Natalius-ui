@@ -7,6 +7,7 @@ export const loginInUser = (payload) => {
     method: 'POST',
     url: API_HOST_PREFIX + '/auth/login',
     data: payload,
+    withCredentials: true,
     headers: { 'Content-Type': 'application/json' },
   };
   return axios(config);
