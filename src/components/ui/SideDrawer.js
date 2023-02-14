@@ -45,7 +45,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideDrawer = () => {
-  const [removeCookie] = useCookies();
+  const [cookies, removeCookie] = useCookies();
   const drawerwidth = 240;
   const history = useHistory();
   const dispatch = useDispatch();
