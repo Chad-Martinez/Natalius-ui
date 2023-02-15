@@ -45,7 +45,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideDrawer = () => {
-  const [cookies, removeCookie] = useCookies();
+  const [, removeCookie] = useCookies();
   const drawerwidth = 240;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -58,10 +58,10 @@ const SideDrawer = () => {
 
   const logoutHandler = async () => {
     dispatch(authActions.setLogout());
-    removeCookie('RT');
-    removeCookie('AT');
     history.push('/');
     await invalidateRefreshToken(userId);
+    removeCookie('RT');
+    removeCookie('AT');
   };
 
   return (
