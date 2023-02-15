@@ -20,7 +20,7 @@ import { authActions } from './store/auth-slice';
 function App() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [cookies] = useCookies();
+  const [cookies, removeCookie] = useCookies();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const expiredToken = isExpired(cookies.RT);
   const token = decodeToken(cookies.RT);
@@ -29,9 +29,11 @@ function App() {
     if (!expiredToken) {
       dispatch(authActions.setLogin(token.userId));
     } else {
+      removeCookie('RT');
+      removeCookie('AT');
       history.push('/');
     }
-  }, [expiredToken, token, dispatch, history]);
+  }, [expiredToken, token, dispatch, history, removeCookie]);
 
   let routes = (
     <Switch>
