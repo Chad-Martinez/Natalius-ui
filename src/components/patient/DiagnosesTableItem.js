@@ -1,7 +1,7 @@
 import { TableRow, TableCell, Button } from '@mui/material';
 import dayjs from 'dayjs';
 
-const DiagnosesListItem = ({ diagnosis }) => {
+const DiagnosesTableItem = ({ diagnosis }) => {
   return (
     <TableRow
       key={diagnosis._id}
@@ -25,4 +25,4 @@ const DiagnosesListItem = ({ diagnosis }) => {
   );
 };
 
-export default DiagnosesListItem;
+export default DiagnosesTableItem;
