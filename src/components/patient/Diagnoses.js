@@ -17,8 +17,10 @@ import { loadDiagnosesByPatient } from '../../store/diagnoses-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import EditDiagnosesForm from '../forms/EditDiagnosesForm';
 import DiagnosesListItem from './DiagnosesListItem';
+import Loader from '../ui/Loader';
 
 const Diagnoses = ({ patientId }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const diagnoses = useSelector(
     (state) => state.persistedReducer.diagnoses.diagnoses
@@ -30,7 +32,8 @@ const Diagnoses = ({ patientId }) => {
 
   useEffect(() => {
     dispatch(loadDiagnosesByPatient(patientId));
-  }, []);
+    setIsLoading(false);
+  }, [setIsLoading, dispatch, patientId]);
 
   const mapDiagnoses = (diagnosis) => {
     return <DiagnosesListItem key={diagnosis._id} diagnosis={diagnosis} />;
@@ -81,23 +84,27 @@ const Diagnoses = ({ patientId }) => {
           />
         </Collapse>
       </Grid>
-      <Grid xs={12} item>
-        <Collapse in={!openForm}>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Diagnosis</TableCell>
-                  <TableCell align='right'>Provider</TableCell>
-                  <TableCell align='right'>Onset Date</TableCell>
-                  <TableCell align='right'>Link</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{mappedDiagnoses}</TableBody>
-            </Table>
-          </TableContainer>
-        </Collapse>
-      </Grid>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Grid xs={12} item>
+          <Collapse in={!openForm}>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Diagnosis</TableCell>
+                    <TableCell align='right'>Provider</TableCell>
+                    <TableCell align='right'>Onset Date</TableCell>
+                    <TableCell align='right'>Link</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>{mappedDiagnoses}</TableBody>
+              </Table>
+            </TableContainer>
+          </Collapse>
+        </Grid>
+      )}
     </Grid>
   );
 };

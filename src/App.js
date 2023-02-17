@@ -1,5 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Switch, Route, Redirect } from 'react-router-dom';
