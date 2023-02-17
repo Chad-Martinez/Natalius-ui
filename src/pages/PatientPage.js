@@ -1,23 +1,17 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadPatientById } from '../store/patient-actions';
 import { useEffect } from 'react';
-import { Avatar, Grid, styled, Paper } from '@mui/material';
+import { Avatar, Grid } from '@mui/material';
 import defaultAvatar from '../assets/images/avatar-placeholder.webp';
 import PatientProfile from '../components/patient/PatientProfile';
 import Vitals from '../components/patient/Vitals';
 import Diagnoses from '../components/patient/Diagnoses';
-
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: 'center',
-//   color: theme.palette.text.secondary,
-// }));
+import Loader from '../components/ui/Loader';
 
 const PatientPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const patient = useSelector(
     (state) => state.persistedReducer.patients.patient
@@ -26,6 +20,7 @@ const PatientPage = () => {
 
   useEffect(() => {
     dispatch(loadPatientById(patientId));
+    setIsLoading(false);
   }, [patientId, dispatch]);
   return (
     <>
@@ -39,28 +34,34 @@ const PatientPage = () => {
         }}
         item
       >
-        <Grid
-          xs={12}
-          md={4}
-          item
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <Avatar
-            alt='avatar placeholder'
-            src={defaultAvatar}
-            sx={{
-              height: '100%',
-              width: '100%',
-              border: 2,
-            }}
-          />
-        </Grid>
-        <PatientProfile patient={patient} />
-        <Vitals patient={patient} />
-        <Diagnoses patientId={patientId} />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Fragment>
+            <Grid
+              xs={12}
+              md={4}
+              item
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Avatar
+                alt='avatar placeholder'
+                src={defaultAvatar}
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  border: 2,
+                }}
+              />
+            </Grid>
+            <PatientProfile patient={patient} />
+            <Vitals patient={patient} />
+            <Diagnoses patientId={patientId} />
+          </Fragment>
+        )}
       </Grid>
     </>
   );

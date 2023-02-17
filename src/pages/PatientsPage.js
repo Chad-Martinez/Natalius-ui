@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Paper,
-  Stack,
   TableRow,
   TableCell,
   TableBody,
@@ -13,28 +12,18 @@ import {
   TableHead,
   Link,
 } from '@mui/material';
-// import { styled } from '@mui/material/styles';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PatientListItem from '../components/patient/PatientListItem';
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { loadPatients, loadPatientById } from '../store/patient-actions';
+import { loadPatients } from '../store/patient-actions';
+import Loader from '../components/ui/Loader';
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: 'left',
-//   display: 'flex',
-//   justifyContent: 'space-between',
-//   color: theme.palette.text.secondary,
-// }));
-
-// remove stack code
 // refactor table to its own table component
 // add a stick header to the table
 
 const PatientsPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.persistedReducer.auth.token);
   const patientsList = useSelector(
@@ -53,11 +42,12 @@ const PatientsPage = () => {
     } catch (error) {
       console.log('LOAD PATIENTS ERROR ', error);
     }
+    setIsLoading(false);
   }, [token, dispatch]);
 
   useEffect(() => {
     getAllPatients();
-  }, []);
+  }, [setIsLoading, getAllPatients]);
 
   return (
     <Container
@@ -65,7 +55,7 @@ const PatientsPage = () => {
       sx={{
         backgroundColor: 'white',
         flexGrow: 1,
-        height: 'auto',
+        height: 'auto%',
         overflow: 'auto',
       }}
     >
@@ -89,46 +79,24 @@ const PatientsPage = () => {
           </Button>
         </Link>
       </Box>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Patient Name</TableCell>
-              <TableCell align='right'>Date of Birth</TableCell>
-              <TableCell align='right'>Height</TableCell>
-              <TableCell align='right'>Weight</TableCell>
-              <TableCell align='right'></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{mappedPatients}</TableBody>
-        </Table>
-      </TableContainer>
-      {/* <Stack spacing={1}>
-        <Item>
-          <Container
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
-          >
-            <Box>Name</Box>
-            <Box>DOB</Box>
-            <Box>Height:</Box>
-            <Box>Weight</Box>
-          </Container>
-          <Button variant='contained' size='small'>
-            View
-          </Button>
-        </Item>
-        <Item>
-          <Box>James Dunson</Box>
-          <Box>DOB: 12/01/2000</Box>
-          <Box>Weight: 240</Box>
-          <Box>Height: 5'6"</Box>
-        </Item>
-        {mappedPatients} */}
-      {/* </Stack> */}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Patient Name</TableCell>
+                <TableCell align='right'>Date of Birth</TableCell>
+                <TableCell align='right'>Height</TableCell>
+                <TableCell align='right'>Weight</TableCell>
+                <TableCell align='right'></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{mappedPatients}</TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Container>
   );
 };
