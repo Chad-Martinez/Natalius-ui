@@ -19,7 +19,9 @@ import Diagnoses from '../components/patient/Diagnoses';
 
 const PatientPage = () => {
   const dispatch = useDispatch();
-  const patient = useSelector((state) => state.patients.patient);
+  const patient = useSelector(
+    (state) => state.persistedReducer.patients.patient
+  );
   const { patientId } = useParams();
 
   useEffect(() => {

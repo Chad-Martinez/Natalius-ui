@@ -11,7 +11,9 @@ import SideDrawer from './SideDrawer';
 const mdTheme = createTheme();
 
 const Layout = (props) => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector(
+    (state) => state.persistedReducer.auth.isLoggedIn
+  );
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex', height: '100%' }}>

@@ -20,8 +20,12 @@ import DiagnosesListItem from './DiagnosesListItem';
 
 const Diagnoses = ({ patientId }) => {
   const dispatch = useDispatch();
-  const diagnoses = useSelector((state) => state.diagnoses.diagnoses);
-  const diagnosesId = useSelector((state) => state.diagnoses.id);
+  const diagnoses = useSelector(
+    (state) => state.persistedReducer.diagnoses.diagnoses
+  );
+  const diagnosesId = useSelector(
+    (state) => state.persistedReducer.diagnoses.id
+  );
   const [openForm, setOpenForm] = useState(false);
 
   useEffect(() => {

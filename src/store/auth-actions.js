@@ -2,7 +2,7 @@ import { authActions } from './auth-slice';
 import { loginInUser, registerUser } from '../services/auth-service';
 import { toast } from 'react-toastify';
 
-export const login = (loginData) => {
+export const login = (loginData, push) => {
   return async (dispatch) => {
     try {
       const response = await loginInUser(loginData);
@@ -14,6 +14,7 @@ export const login = (loginData) => {
       const userId = response.data;
       dispatch(authActions.setLogin(userId));
       toast.success('Login Successful!');
+      push('/dashboard');
     } catch (error) {
       toast.error(error.response.data.message);
     }
