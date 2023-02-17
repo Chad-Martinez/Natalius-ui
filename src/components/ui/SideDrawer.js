@@ -1,7 +1,7 @@
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { uiActions } from '../../store/ui-slice';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { authActions } from '../../store/auth-slice';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -16,7 +16,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useCookies } from 'react-cookie';
-import { invalidateRefreshToken } from '../../services/token-service';
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -47,10 +46,10 @@ const Drawer = styled(MuiDrawer, {
 const SideDrawer = () => {
   const [, removeCookie] = useCookies();
   const drawerwidth = 240;
-  const history = useHistory();
   const dispatch = useDispatch();
-  const open = useSelector((state) => state.ui.navigation.isDrawerOpen);
-  const userId = useSelector((state) => state.auth.userId);
+  const open = useSelector(
+    (state) => state.persistedReducer.ui.navigation.isDrawerOpen
+  );
 
   const toggleDrawer = () => {
     dispatch(uiActions.setIsDrawerOpen());
@@ -58,8 +57,6 @@ const SideDrawer = () => {
 
   const logoutHandler = async () => {
     dispatch(authActions.setLogout());
-    history.push('/');
-    await invalidateRefreshToken(userId);
     removeCookie('RT');
     removeCookie('AT');
   };
@@ -85,7 +82,14 @@ const SideDrawer = () => {
       </Toolbar>
       <Divider />
       <List component='nav'>
-        <Link component={RouterLink} to='/dashboard'>
+        <Link
+          sx={{
+            color: '#333333',
+          }}
+          underline='none'
+          component={RouterLink}
+          to='/dashboard'
+        >
           <ListItemButton>
             <ListItemIcon>
               <DashboardIcon />
@@ -93,7 +97,14 @@ const SideDrawer = () => {
             <ListItemText primary='Dashboard' />
           </ListItemButton>
         </Link>
-        <Link component={RouterLink} to='/patients'>
+        <Link
+          sx={{
+            color: '#333333',
+          }}
+          underline='none'
+          component={RouterLink}
+          to='/patients'
+        >
           <ListItemButton>
             <ListItemIcon>
               <PeopleIcon />

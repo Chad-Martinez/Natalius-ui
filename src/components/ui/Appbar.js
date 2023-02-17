@@ -33,8 +33,12 @@ const AppBar = styled(MuiAppBar, {
 const Appbar = () => {
   const drawerwidth = 240;
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const open = useSelector((state) => state.ui.navigation.isDrawerOpen);
+  const isLoggedIn = useSelector(
+    (state) => state.persistedReducer.auth.isLoggedIn
+  );
+  const open = useSelector(
+    (state) => state.persistedReducer.ui.navigation.isDrawerOpen
+  );
 
   const toggleDrawer = () => {
     dispatch(uiActions.setIsDrawerOpen());

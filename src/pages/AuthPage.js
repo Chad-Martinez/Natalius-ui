@@ -14,14 +14,16 @@ import { login, register } from '../store/auth-actions';
 
 const AuthPage = () => {
   const history = useHistory();
-  const { isLoggedIn, hasRegistered } = useSelector((state) => state.auth);
+  const hasRegistered = useSelector(
+    (state) => state.persistedReducer.auth.hasRegistered
+  );
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(true);
   const showLoginHandler = () => setShowLogin(!showLogin);
 
   const handleSubmit = (action, data) => {
     if (action === 'LOGIN') {
-      return dispatch(login(data));
+      return dispatch(login(data, history.push));
     }
     dispatch(register(data));
   };
@@ -30,10 +32,7 @@ const AuthPage = () => {
     if (hasRegistered) {
       setShowLogin(true);
     }
-    if (isLoggedIn) {
-      history.push('/dashboard');
-    }
-  }, [isLoggedIn, history, hasRegistered]);
+  }, [hasRegistered]);
 
   return (
     <Container component='main' maxWidth='xs'>

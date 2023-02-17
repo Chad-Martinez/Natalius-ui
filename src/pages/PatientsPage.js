@@ -36,8 +36,10 @@ import { loadPatients, loadPatientById } from '../store/patient-actions';
 
 const PatientsPage = () => {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
-  const patientsList = useSelector((state) => state.patients.patientsList);
+  const token = useSelector((state) => state.persistedReducer.auth.token);
+  const patientsList = useSelector(
+    (state) => state.persistedReducer.patients.patientsList
+  );
 
   const mapPatientListItems = (patient) => {
     return <PatientListItem key={patient._id} patient={patient} />;
@@ -76,7 +78,7 @@ const PatientsPage = () => {
         <Typography marginTop={2} component='h1' variant='h4' color='primary'>
           Patient's Page
         </Typography>
-        <Link component={RouterLink} to='/patients/patient/patient-form'>
+        <Link component={RouterLink} to='/patient/patient-form'>
           <Button
             sx={{
               marginY: 2,

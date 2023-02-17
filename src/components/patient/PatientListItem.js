@@ -3,7 +3,7 @@ import { TableRow, TableCell, Button } from '@mui/material';
 const PatientListItem = ({ patient }) => {
   const history = useHistory();
   const viewPatientHandler = () => {
-    history.push(`/patients/patient/${patient._id}`);
+    history.push(`/patient/view/${patient._id}`);
   };
 
   return (
