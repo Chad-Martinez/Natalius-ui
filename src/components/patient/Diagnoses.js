@@ -1,27 +1,10 @@
-import { useState, useEffect } from 'react';
-import {
-  Grid,
-  Box,
-  Typography,
-  Button,
-  Collapse,
-  Paper,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  Table,
-  TableHead,
-} from '@mui/material';
-import { loadDiagnosesByPatient } from '../../store/diagnoses-actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { Grid, Box, Typography, Button, Collapse } from '@mui/material';
+import { useSelector } from 'react-redux';
 import EditDiagnosesForm from '../forms/EditDiagnosesForm';
-import DiagnosesListItem from './DiagnosesListItem';
-import Loader from '../ui/Loader';
+import DiagnosesTable from './DiagnosesTable';
 
 const Diagnoses = ({ patientId }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
   const diagnoses = useSelector(
     (state) => state.persistedReducer.diagnoses.diagnoses
   );
@@ -30,20 +13,10 @@ const Diagnoses = ({ patientId }) => {
   );
   const [openForm, setOpenForm] = useState(false);
 
-  useEffect(() => {
-    dispatch(loadDiagnosesByPatient(patientId));
-    setIsLoading(false);
-  }, [setIsLoading, dispatch, patientId]);
-
-  const mapDiagnoses = (diagnosis) => {
-    return <DiagnosesListItem key={diagnosis._id} diagnosis={diagnosis} />;
-  };
-
-  const mappedDiagnoses = diagnoses.length > 0 && diagnoses.map(mapDiagnoses);
-
   const showDiagnosesFormHandler = () => {
     setOpenForm(!openForm);
   };
+
   return (
     <Grid container marginTop={2} item>
       <Grid xs={10} item>
@@ -84,27 +57,11 @@ const Diagnoses = ({ patientId }) => {
           />
         </Collapse>
       </Grid>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Grid xs={12} item>
-          <Collapse in={!openForm}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Diagnosis</TableCell>
-                    <TableCell align='right'>Provider</TableCell>
-                    <TableCell align='right'>Onset Date</TableCell>
-                    <TableCell align='right'>Link</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>{mappedDiagnoses}</TableBody>
-              </Table>
-            </TableContainer>
-          </Collapse>
-        </Grid>
-      )}
+      <DiagnosesTable
+        diagnoses={diagnoses}
+        patientId={patientId}
+        openForm={openForm}
+      />
     </Grid>
   );
 };

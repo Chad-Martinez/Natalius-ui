@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { TableRow, TableCell, Button } from '@mui/material';
-const PatientListItem = ({ patient }) => {
+const PatientTableItem = ({ patient }) => {
   const history = useHistory();
   const viewPatientHandler = () => {
     history.push(`/patient/view/${patient._id}`);
@@ -26,4 +26,4 @@ const PatientListItem = ({ patient }) => {
   );
 };
 
-export default PatientListItem;
+export default PatientTableItem;
