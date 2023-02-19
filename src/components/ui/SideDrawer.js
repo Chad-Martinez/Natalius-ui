@@ -1,7 +1,7 @@
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { uiActions } from '../../store/ui-slice';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { authActions } from '../../store/auth-slice';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -44,6 +44,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideDrawer = () => {
+  const history = useHistory();
   const [, removeCookie] = useCookies();
   const drawerwidth = 240;
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const SideDrawer = () => {
     dispatch(authActions.setLogout());
     removeCookie('RT');
     removeCookie('AT');
+    history.replace('/');
   };
 
   return (
