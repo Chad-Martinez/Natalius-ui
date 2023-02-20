@@ -33,8 +33,8 @@ const AppBar = styled(MuiAppBar, {
 const Appbar = () => {
   const drawerwidth = 240;
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(
-    (state) => state.persistedReducer.auth.isLoggedIn
+  const isAuthenticated = useSelector(
+    (state) => state.persistedReducer.auth.isAuthenticated
   );
   const open = useSelector(
     (state) => state.persistedReducer.ui.navigation.isDrawerOpen
@@ -69,7 +69,7 @@ const Appbar = () => {
         >
           Natalius
         </Typography>
-        {isLoggedIn && (
+        {isAuthenticated && (
           <IconButton
             edge='start'
             color='inherit'
