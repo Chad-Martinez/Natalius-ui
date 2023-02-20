@@ -16,7 +16,6 @@ import { loadPatients } from '../../store/patient-actions';
 const PatientsTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.persistedReducer.auth.token);
   const patientsList = useSelector(
     (state) => state.persistedReducer.patients.patientsList
   );
@@ -29,12 +28,12 @@ const PatientsTable = () => {
 
   const getAllPatients = useCallback(async () => {
     try {
-      dispatch(loadPatients(token));
+      dispatch(loadPatients());
     } catch (error) {
       console.log('LOAD PATIENTS ERROR ', error);
     }
     setIsLoading(false);
-  }, [token, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     getAllPatients();

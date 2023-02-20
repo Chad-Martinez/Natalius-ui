@@ -2,7 +2,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { uiActions } from '../../store/ui-slice';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
-import { authActions } from '../../store/auth-slice';
+import { logout } from '../../store/auth-actions';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Link, List, Divider, IconButton, Toolbar } from '@mui/material';
@@ -52,12 +52,14 @@ const SideDrawer = () => {
     (state) => state.persistedReducer.ui.navigation.isDrawerOpen
   );
 
+  const userId = useSelector((state) => state.persistedReducer.auth.userId);
+
   const toggleDrawer = () => {
     dispatch(uiActions.setIsDrawerOpen());
   };
 
-  const logoutHandler = async () => {
-    dispatch(authActions.setLogout());
+  const logoutHandler = () => {
+    dispatch(logout(userId));
     removeCookie('RT');
     removeCookie('AT');
     history.replace('/');

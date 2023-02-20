@@ -11,8 +11,8 @@ import SideDrawer from './SideDrawer';
 const mdTheme = createTheme();
 
 const Layout = (props) => {
-  const isLoggedIn = useSelector(
-    (state) => state.persistedReducer.auth.isLoggedIn
+  const isAuthenticated = useSelector(
+    (state) => state.persistedReducer.auth.isAuthenticated
   );
   return (
     <ThemeProvider theme={mdTheme}>
@@ -36,7 +36,7 @@ const Layout = (props) => {
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Box>
 
-        {isLoggedIn && <SideDrawer />}
+        {isAuthenticated && <SideDrawer />}
       </Box>
     </ThemeProvider>
   );

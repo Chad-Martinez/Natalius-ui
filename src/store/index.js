@@ -9,7 +9,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import storage from 'redux-persist/lib/storage/session';
 import authSlice from '../store/auth-slice';
 import patientSlice from '../store/patient-slice';
 import uiSlice from '../store/ui-slice';
@@ -17,6 +17,7 @@ import diagnosesSlice from '../store/diagnoses-slice';
 
 const persistConfig = {
   key: 'root',
+  version: 1,
   storage,
   whitelist: ['auth'],
 };
