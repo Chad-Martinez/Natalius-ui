@@ -19,7 +19,6 @@ export const getDiagnoses = (patientId) => {
     url: API_HOST_PREFIX + `/api/diagnoses/list/${patientId}`,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow': '*',
     },
     withCredentials: true,
   };
@@ -33,7 +32,6 @@ export const updateDiagnoses = (payload) => {
     url: API_HOST_PREFIX + `/api/diagnoses/update`,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow': '*',
     },
     withCredentials: true,
   };

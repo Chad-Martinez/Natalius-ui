@@ -2,6 +2,7 @@ import { Grid, Box, Typography } from '@mui/material';
 import { Fragment } from 'react';
 
 const PatientContactInfo = ({ patient }) => {
+  const { address, city, state, zip } = patient.address;
   return (
     <Fragment>
       <Grid container item xs={6} marginTop={2}>
@@ -22,17 +23,12 @@ const PatientContactInfo = ({ patient }) => {
         </Grid>
         <Grid xs={12} item>
           <Typography fontSize={20} color='#333333'>
-            {patient.address}
+            {address}
           </Typography>
         </Grid>
         <Grid xs={12} item>
           <Typography fontSize={20} color='#000033'>
-            {patient.address2}
-          </Typography>
-        </Grid>
-        <Grid xs={12} item>
-          <Typography fontSize={20} color='#000033'>
-            {patient.city}, {patient.state} {patient.zip}
+            {city}, {state} {zip}
           </Typography>
         </Grid>
       </Grid>
@@ -58,11 +54,7 @@ const PatientContactInfo = ({ patient }) => {
             Home Phone: {patient.phone}
           </Typography>
         </Grid>
-        <Grid xs={12} item>
-          <Typography fontSize={20} color='#000033'>
-            Cell Phone: None
-          </Typography>
-        </Grid>
+
         <Grid xs={12} item>
           <Typography fontSize={20} color='#000033'>
             Email: {patient.email}

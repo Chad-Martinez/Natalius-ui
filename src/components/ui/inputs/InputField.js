@@ -10,6 +10,7 @@ const InputField = ({
   isRequired,
   type,
   inputProps,
+  disabled,
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -21,8 +22,8 @@ const InputField = ({
       required={isRequired}
       type={type ? type : ''}
       fullWidth
+      disabled={disabled}
       value={field.value || ''}
-      id={field.name}
       label={label}
       name={field.name}
       inputProps={inputProps ? inputProps : {}}

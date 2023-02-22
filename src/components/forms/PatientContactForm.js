@@ -1,11 +1,10 @@
 import { Fragment } from 'react';
 import { Typography, Grid } from '@mui/material';
 import InputField from '../ui/inputs/InputField';
-import SelectInput from '../ui/inputs/SelectInput';
 import MaskedInput from '../ui/inputs/MaskedInput';
-import { US_STATES } from '../../util/helpers';
+import GoogleAutoCompleter from './GoogleAutocompeter';
 
-const PatientContactForm = ({ control }) => {
+const PatientContactForm = ({ control, setValue, clearErrors }) => {
   return (
     <Fragment>
       <Typography marginY={2} component='h1' variant='h6' color='primary'>
@@ -53,8 +52,8 @@ const PatientContactForm = ({ control }) => {
           <MaskedInput
             mask='(999)999-9999'
             validator='phone'
-            label='Home Phone'
-            name='phoneHome'
+            label='Phone'
+            name='phone'
             control={control}
             isRequired={true}
             errorMessage='Please enter a valid phone number'
@@ -80,63 +79,19 @@ const PatientContactForm = ({ control }) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <InputField
+          <GoogleAutoCompleter
             label={'Address'}
+            setAddress={setValue}
             name={'address'}
             control={control}
             isRequired={true}
+            clearErrors={clearErrors}
             rules={{
               required: {
                 value: true,
-                message: 'Please enter an address',
+                message: 'Please enter a valid address',
               },
             }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <InputField
-            label={'Address - Line 2'}
-            name={'address2'}
-            control={control}
-            isRequired={false}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <InputField
-            label={'City'}
-            name={'city'}
-            control={control}
-            isRequired={true}
-            rules={{
-              required: {
-                value: true,
-                message: 'Please enter a city',
-              },
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <SelectInput
-            control={control}
-            isRequired={true}
-            name={'state'}
-            rules={{
-              required: true,
-            }}
-            errorMessage={'Select a state'}
-            label='State'
-            listArray={US_STATES}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <MaskedInput
-            mask='99999-9999'
-            validator='zip'
-            label='Zip Code'
-            name='zip'
-            control={control}
-            isRequired={true}
-            errorMessage='Please enter a valid zip code'
           />
         </Grid>
       </Grid>

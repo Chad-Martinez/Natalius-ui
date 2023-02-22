@@ -12,7 +12,7 @@ const PatientTableItem = ({ patient }) => {
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell component='th' scope='row'>
-        {patient.firstName + patient.lastName}
+        {`${patient.firstName} ${patient.lastName}`}
       </TableCell>
       <TableCell align='right'>{'01/01/2000'}</TableCell>
       <TableCell align='right'>{`5'10"`}</TableCell>

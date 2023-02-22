@@ -5,7 +5,10 @@ const patientSlice = createSlice({
   initialState: {
     patientsList: [],
     patientListItems: [],
-    patient: {},
+    patient: {
+      address: {},
+      medicalInfo: {},
+    },
   },
   reducers: {
     setPatientsList(state, action) {

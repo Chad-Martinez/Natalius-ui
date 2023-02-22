@@ -9,7 +9,7 @@ import {
   TableHead,
 } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import PatientTableItem from './PatienTableItem';
+import PatientTableItem from './PatientTableItem';
 import Loader from '../ui/Loader';
 import { loadPatients } from '../../store/patient-actions';
 
@@ -43,7 +43,12 @@ const PatientsTable = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer
+          sx={{
+            marginBottom: 5,
+          }}
+          component={Paper}
+        >
           <Table sx={{ minWidth: 650 }} aria-label='simple table'>
             <TableHead>
               <TableRow>
