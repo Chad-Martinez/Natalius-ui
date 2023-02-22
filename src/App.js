@@ -46,14 +46,6 @@ function App() {
           </Route>
         </Switch>
       );
-
-      if (isTokenExpired) {
-        if (authenticated) {
-          dispatch(authActions.setLogout());
-        }
-        setRoutes(routes);
-        return history.push('/');
-      }
       if (!isTokenExpired) {
         routes = (
           <Switch>
@@ -78,6 +70,17 @@ function App() {
           const { userId } = decodeToken(refreshToken);
           dispatch(authActions.setLogin(userId));
           history.push('/dashboard');
+        }
+        setRoutes(routes);
+      } else if (refreshToken && isTokenExpired) {
+        if (authenticated) {
+          dispatch(authActions.setLogout());
+        }
+        setRoutes(routes);
+        history.push('/');
+      } else {
+        if (authenticated) {
+          dispatch(authActions.setLogout());
         }
         setRoutes(routes);
       }

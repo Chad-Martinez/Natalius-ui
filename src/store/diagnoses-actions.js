@@ -13,7 +13,7 @@ export const loadDiagnosesByPatient = (payload) => {
       const data = response.data.diagnoses;
       dispatch(diagnosesActions.setDiagnoses(data));
     } catch (error) {
-      console.log('ERROR ', error);
+      console.log('DIAGNOSES ERROR ', error);
 
       if (error.response.status === 404) {
         return dispatch(
@@ -23,7 +23,7 @@ export const loadDiagnosesByPatient = (payload) => {
           })
         );
       }
-      toast.error('Could not load diagnoses. Try again');
+      toast.error(error.response.data.message, { toastId: 'error' });
     }
   };
 };

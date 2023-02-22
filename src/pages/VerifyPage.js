@@ -1,16 +1,28 @@
 import { Container, Box } from '@mui/material';
-import { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useCallback, useEffect } from 'react';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { verifyEmail } from '../services/auth-service';
 import natalius from '../assets/images/shell.png';
+import { toast } from 'react-toastify';
 
 const VerifyPage = () => {
+  const history = useHistory();
   const params = useParams();
   const { verifyId } = params;
 
+  const verify = useCallback(async () => {
+    try {
+      const response = await verifyEmail(verifyId);
+      toast.success(response.data.message, 'verify');
+      history.push('/');
+    } catch (error) {
+      toast.error(error.response.data.message, 'verify-error');
+    }
+  }, [history, verifyId]);
+
   useEffect(() => {
-    verifyEmail(verifyId);
-  }, [verifyId]);
+    verify();
+  }, [verify]);
   return (
     <Container>
       <Box
