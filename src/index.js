@@ -7,6 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
+import axios from 'axios';
+import { authActions } from './store/auth-slice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,6 +19,18 @@ root.render(
       </BrowserRouter>
     </PersistGate>
   </Provider>
+);
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status === 401) {
+      store.dispatch(authActions.setLogout());
+    }
+    return Promise.reject(error);
+  }
 );
 
 // If you want to start measuring performance in your app, pass a function
