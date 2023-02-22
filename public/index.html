@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <script>      
+    let map;
+    async function initMap() {
+      map = await new window.google.maps.places.AutocompleteService();
+    }
+    window.initMap = initMap;</script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp51KnjhNzCLK3JnrVr3ik5ksWHLmsQEI&libraries=places&callback=initMap" ></script>
+    
+    <meta charset="utf-8" />   
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />

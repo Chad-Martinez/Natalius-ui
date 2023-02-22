@@ -17,11 +17,13 @@ const PatientPage = () => {
     (state) => state.persistedReducer.patients.patient
   );
   const { patientId } = useParams();
+  const { _id } = patient;
 
   useEffect(() => {
+    if (_id && _id === patientId) return setIsLoading(false);
     dispatch(loadPatientById(patientId));
     setIsLoading(false);
-  }, [patientId, dispatch]);
+  }, [patientId, dispatch, _id]);
   return (
     <>
       <Grid

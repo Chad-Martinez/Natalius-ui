@@ -4,12 +4,22 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 
-const DatePicker = ({ control, name, rules, label, isRequired }) => {
+const DatePicker = ({
+  control,
+  name,
+  rules,
+  label,
+  isRequired,
+  onCustomValidate,
+}) => {
   const { field, fieldState } = useController({
     name,
     control,
     rules,
   });
+  const customValidateHandler = () => {
+    onCustomValidate(field.value);
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopDatePicker
@@ -17,9 +27,11 @@ const DatePicker = ({ control, name, rules, label, isRequired }) => {
         inputFormat='MM/DD/YYYY'
         value={field.value || null}
         onChange={field.onChange}
+        onAccept={customValidateHandler}
         renderInput={(params) => (
           <TextField
             required={isRequired}
+            onBlur={customValidateHandler}
             {...params}
             fullWidth
             value={field.value || null}

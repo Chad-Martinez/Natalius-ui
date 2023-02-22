@@ -1,33 +1,45 @@
 import { useForm } from 'react-hook-form';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from 'react-router-dom';
-import { Typography, Container, Box, Button } from '@mui/material';
-import { addPatient } from '../services/patient-service';
+import { Typography, Container, Box } from '@mui/material';
+import { addPatient } from '../store/patient-actions';
 import { Fragment, useState } from 'react';
-import { toast } from 'react-toastify';
 import Loader from '../components/ui/Loader';
+import SendIcon from '@mui/icons-material/Send';
 
 import dayjs from 'dayjs';
 import PatientContactForm from '../components/forms/PatientContactForm';
 import PatientMedicalInfoForm from '../components/forms/PatientMedicalInfoForm';
+import { useDispatch } from 'react-redux';
 
 const PatientFormPage = () => {
+  const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control, setValue, clearErrors } = useForm({
+    defaultValues: {
+      firstName: '',
+      middleInitial: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      address: '',
+      ethnicity: '',
+      dob: '',
+      age: '',
+      heightFeet: '',
+      heightInches: '',
+      weight: '',
+    },
+  });
   const history = useHistory();
 
   const onSubmit = async (data) => {
-    const zip = data.zip.replace('-', '').trim();
+    setIsSubmitting(true);
     const dob = dayjs(data.dob).toDate();
-    const patientData = { ...data, zip, dob };
-    try {
-      setIsLoading(true);
-      await addPatient(patientData);
-      toast.success('Patient created!');
-      setIsLoading(false);
-      history.push('/patients');
-    } catch (error) {
-      toast.error('Error adding patient. Please try again');
-    }
+    const patientData = { ...data, dob };
+    dispatch(addPatient(patientData, history.push));
+    setIsSubmitting(false);
   };
 
   return (
@@ -48,8 +60,12 @@ const PatientFormPage = () => {
             Patient Form
           </Typography>
           <Box component='form' noValidate>
-            <PatientContactForm control={control} />
-            <PatientMedicalInfoForm control={control} />
+            <PatientContactForm
+              control={control}
+              setValue={setValue}
+              clearErrors={clearErrors}
+            />
+            <PatientMedicalInfoForm control={control} setValue={setValue} />
             <Box
               sx={{
                 display: 'flex',
@@ -57,18 +73,15 @@ const PatientFormPage = () => {
                 justifyContent: 'end',
               }}
             >
-              {/* <Button
-            type='button'
-            variant='outlined'
-            sx={{
-              marginRight: 1,
-            }}
-          >
-            Reset
-          </Button> */}
-              <Button onClick={handleSubmit(onSubmit)} variant='contained'>
-                Add Patient
-              </Button>
+              <LoadingButton
+                onClick={handleSubmit(onSubmit)}
+                loading={isSubmitting}
+                loadingPosition='end'
+                variant='contained'
+                endIcon={<SendIcon />}
+              >
+                <span>{isSubmitting ? 'Submitting' : 'Submit'}</span>
+              </LoadingButton>
             </Box>
           </Box>
         </Fragment>
