@@ -14,7 +14,7 @@ export const loadDiagnosesByPatient = (payload) => {
       dispatch(diagnosesActions.setDiagnoses(data));
     } catch (error) {
       console.log('DIAGNOSES ERROR ', error);
-
+      if (error.response.status === 401) return;
       if (error.response.status === 404) {
         return dispatch(
           diagnosesActions.setDiagnoses({
@@ -37,6 +37,7 @@ export const addNewPatientDiagnoses = (payload) => {
       toast.success('Diagnoses Updated');
     } catch (error) {
       console.log('ERROR ', error);
+      if (error.response.status === 401) return;
       toast.error('Could not add diagnoses Try again');
     }
   };
@@ -51,6 +52,7 @@ export const updatePatientDiagnoses = (payload) => {
       toast.success('Diagnoses Updated');
     } catch (error) {
       console.log('ERROR ', error);
+      if (error.response.status === 401) return;
       toast.error('Could not update diagnoses Try again');
     }
   };
