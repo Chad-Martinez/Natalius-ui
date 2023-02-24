@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import axios from 'axios';
 import { authActions } from './store/auth-slice';
+import { toast } from 'react-toastify';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,7 +28,9 @@ axios.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401) {
+      console.log(error);
       store.dispatch(authActions.setLogout());
+      return toast.error(error.response.data.message);
     }
     return Promise.reject(error);
   }

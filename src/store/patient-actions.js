@@ -14,6 +14,7 @@ export const loadPatients = (payload) => {
       dispatch(patientActions.setPatientsList(data.patients));
     } catch (error) {
       console.log('LOAD ALL PATIENTS ERROR ', error);
+      if (error.response.status === 401) return;
       toast.error('Could not retrieve patients. Try reloading the page', {
         toastId: 'load-patients-error',
       });
@@ -30,6 +31,7 @@ export const loadPatientById = (patientId) => {
       dispatch(patientActions.setPatient(data.patient));
     } catch (error) {
       console.log('LOAD PATIENT BY ID ERROR ', error);
+      if (error.response.status === 401) return;
       toast.error(error.response.data.message, {
         toastId: 'load-patient-error',
       });
@@ -48,6 +50,7 @@ export const addPatient = (patientData, push) => {
       push(`/patient/view/${data.patient._id}`);
     } catch (error) {
       console.log('ADD PATIENT ERROR ', error);
+      if (error.response.status === 401) return;
       toast.error(error.response.data.message, {
         toastId: 'add-patient-error',
       });
