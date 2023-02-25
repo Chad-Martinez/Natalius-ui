@@ -1,4 +1,4 @@
-import { Fragment, useState, useCallback, useEffect } from 'react';
+import { Fragment } from 'react';
 import {
   Paper,
   TableRow,
@@ -8,14 +8,11 @@ import {
   Table,
   TableHead,
 } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PatientTableItem from './PatientTableItem';
 import Loader from '../ui/Loader';
-import { loadPatients } from '../../store/patient-actions';
 
-const PatientsTable = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
+const PatientsTable = ({ isLoadingPatients }) => {
   const patientsList = useSelector(
     (state) => state.persistedReducer.patients.patientsList
   );
@@ -26,21 +23,9 @@ const PatientsTable = () => {
 
   const mappedPatients = patientsList.map(mapPatientListItems);
 
-  const getAllPatients = useCallback(async () => {
-    try {
-      dispatch(loadPatients());
-    } catch (error) {
-      console.log('LOAD PATIENTS ERROR ', error);
-    }
-    setIsLoading(false);
-  }, [dispatch]);
-
-  useEffect(() => {
-    getAllPatients();
-  }, [setIsLoading, getAllPatients]);
   return (
     <Fragment>
-      {isLoading ? (
+      {isLoadingPatients ? (
         <Loader />
       ) : (
         <TableContainer
