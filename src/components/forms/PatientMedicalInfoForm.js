@@ -6,7 +6,7 @@ import DatePicker from '../ui/inputs/DatePicker';
 import { Fragment } from 'react';
 
 const PatientMedicalInfoForm = ({ control, setValue }) => {
-  const calculateAgeHandler = (value) => {
+  const handleCalculateAge = (value) => {
     const today = new Date();
     const dob = new Date(value);
     let age = today.getFullYear() - dob.getFullYear();
@@ -14,8 +14,20 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
     if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
       age--;
     }
+    if (age <= 0) {
+      age = 0;
+    }
     setValue('age', age);
   };
+
+  const gender = [
+    { id: 'Male', item: 'Male' },
+    { id: 'Female', item: 'Female' },
+  ];
+  const smoker = [
+    { id: 'Yes', item: 'Yes' },
+    { id: 'No', item: 'No' },
+  ];
 
   return (
     <Fragment>
@@ -23,7 +35,7 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
         General Medical Information
       </Typography>
       <Grid container spacing={1} justifyContent={'space-between'}>
-        <Grid item xs={12}>
+        <Grid item xs={7}>
           <SelectInput
             control={control}
             isRequired={true}
@@ -41,8 +53,8 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
             control={control}
             name='dob'
             label='DOB'
-            onCustomValidate={calculateAgeHandler}
-            rules={{
+            onCustomValidate={handleCalculateAge}
+            baseRules={{
               required: {
                 value: true,
                 message: 'DOB required',
@@ -68,6 +80,38 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
               min: 0,
               max: 110,
             }}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <SelectInput
+            control={control}
+            isRequired={true}
+            name={'gender'}
+            rules={{
+              required: {
+                value: true,
+                message: 'Gender required',
+              },
+            }}
+            label='Gender'
+            listArray={gender}
+            autoCompleter={true}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <SelectInput
+            control={control}
+            isRequired={true}
+            name={'smoker'}
+            rules={{
+              required: {
+                value: true,
+                message: 'Smoking status required',
+              },
+            }}
+            label='Smoker'
+            listArray={smoker}
+            autoCompleter={true}
           />
         </Grid>
         <Grid item xs={2}>

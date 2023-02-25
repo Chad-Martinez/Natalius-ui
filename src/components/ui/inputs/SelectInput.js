@@ -51,10 +51,13 @@ const SelectInput = ({
           onChange={autoCompleteHandler}
           renderInput={(params) => (
             <TextField
+              required={isRequired}
               name={name}
               value={field.value}
               {...params}
               label={label}
+              error={fieldState.invalid}
+              helperText={fieldState?.error?.message}
             />
           )}
         />

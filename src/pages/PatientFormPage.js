@@ -19,7 +19,7 @@ const PatientFormPage = () => {
   const { handleSubmit, control, setValue, clearErrors } = useForm({
     defaultValues: {
       firstName: '',
-      middleInitial: '',
+      mi: '',
       lastName: '',
       phone: '',
       email: '',
@@ -36,8 +36,12 @@ const PatientFormPage = () => {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    const dob = dayjs(data.dob).toDate();
-    const patientData = { ...data, dob };
+    const patientData = {
+      ...data,
+      dob: dayjs(data.dob).toDate(),
+      gender: data.gender.label,
+      smoker: data.smoker.label,
+    };
     dispatch(addPatient(patientData, history.push));
     setIsSubmitting(false);
   };
