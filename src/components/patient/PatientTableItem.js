@@ -1,10 +1,13 @@
 import { useHistory } from 'react-router-dom';
 import { TableRow, TableCell, Button } from '@mui/material';
+import dayjs from 'dayjs';
 const PatientTableItem = ({ patient }) => {
   const history = useHistory();
   const viewPatientHandler = () => {
     history.push(`/patient/view/${patient._id}`);
   };
+
+  const dob = dayjs(patient.medicalInfo.dob).format('MM/DD/YY');
 
   return (
     <TableRow
@@ -14,9 +17,9 @@ const PatientTableItem = ({ patient }) => {
       <TableCell component='th' scope='row'>
         {`${patient.firstName} ${patient.lastName}`}
       </TableCell>
-      <TableCell align='right'>{'01/01/2000'}</TableCell>
-      <TableCell align='right'>{`5'10"`}</TableCell>
-      <TableCell align='right'>{'200'}</TableCell>
+      <TableCell align='right'>{dob}</TableCell>
+      <TableCell align='right'>{`${patient.medicalInfo.heightFeet}' ${patient.medicalInfo.heightInches}"`}</TableCell>
+      <TableCell align='right'>{patient.medicalInfo.weight}</TableCell>
       <TableCell align='right'>
         <Button variant='contained' size='small' onClick={viewPatientHandler}>
           View

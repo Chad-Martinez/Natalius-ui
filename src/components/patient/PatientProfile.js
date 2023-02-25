@@ -1,5 +1,5 @@
 import { Grid, Box, Typography } from '@mui/material';
-import PatientGeneralInfo from './PatientGeneralInfo';
+import PatientMedicalInfo from './PatientMedicalInfo';
 import PatientContactInfo from './PatientContactInfo';
 
 const PatientProfile = ({ patient }) => {
@@ -17,7 +17,7 @@ const PatientProfile = ({ patient }) => {
           {`${patient.firstName} ${patient.lastName}`}
         </Typography>
       </Box>
-      <PatientGeneralInfo />
+      <PatientMedicalInfo medicalInfo={patient.medicalInfo} />
       <PatientContactInfo patient={patient} />
     </Grid>
   );
