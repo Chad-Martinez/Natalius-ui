@@ -3,7 +3,6 @@ import ReactDom from 'react-dom';
 import {
   Container,
   Box,
-  Chip,
   Slide,
   Button,
   Dialog,
@@ -13,7 +12,17 @@ import {
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
-function ConfirmDiagnoses({ onClose, open, diagnoses, onSubmit }) {
+function ModalPopUp({
+  onClose,
+  open,
+  onSubmit,
+  title,
+  modalBody,
+  enableSubmit,
+  submitTitle,
+  enableClose,
+  closeTitle,
+}) {
   const handleClose = () => {
     onClose();
   };
@@ -26,30 +35,10 @@ function ConfirmDiagnoses({ onClose, open, diagnoses, onSubmit }) {
   return (
     <Dialog onClose={handleClose} open={open} TransitionComponent={Transition}>
       <DialogTitle color='primary' fontSize={28}>
-        Confirm Diagnoses Selections
+        {title}
       </DialogTitle>
       <Container disableGutters={true}>
-        {diagnoses.map((diagnosis) => (
-          <Box
-            display={'block'}
-            sx={{
-              height: '45px',
-            }}
-            margin={2}
-            key={diagnosis._id}
-          >
-            <Chip
-              label={diagnosis.name}
-              variant='outlined'
-              color='primary'
-              sx={{
-                height: '100%',
-                width: 'auto',
-                fontSize: 20,
-              }}
-            />
-          </Box>
-        ))}
+        {modalBody}
         <Box
           sx={{
             display: 'flex',
@@ -58,34 +47,38 @@ function ConfirmDiagnoses({ onClose, open, diagnoses, onSubmit }) {
             height: '45px',
           }}
         >
-          <Button
-            type='button'
-            variant='outlined'
-            sx={{
-              marginRight: 1,
-            }}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-          <Button variant='contained' onClick={submitHandler}>
-            Confirm
-          </Button>
+          {enableClose && (
+            <Button
+              type='button'
+              variant='outlined'
+              sx={{
+                marginRight: 1,
+              }}
+              onClick={handleClose}
+            >
+              {closeTitle}
+            </Button>
+          )}
+          {enableSubmit && (
+            <Button variant='contained' onClick={submitHandler}>
+              {submitTitle}
+            </Button>
+          )}
         </Box>
       </Container>
     </Dialog>
   );
 }
 
-const ModalPopUp = (props) => {
+const ModalPortal = (props) => {
   return (
     <React.Fragment>
       {ReactDom.createPortal(
-        <ConfirmDiagnoses {...props} />,
+        <ModalPopUp {...props} />,
         document.getElementById('overlay-root')
       )}
     </React.Fragment>
   );
 };
 
-export default ModalPopUp;
+export default ModalPortal;
