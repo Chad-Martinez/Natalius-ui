@@ -1,5 +1,12 @@
 import { Fragment, useEffect, useRef } from 'react';
-import { Box, Button, Grid, TextField, Autocomplete } from '@mui/material';
+import {
+  Box,
+  Chip,
+  Button,
+  Grid,
+  TextField,
+  Autocomplete,
+} from '@mui/material';
 import { useState } from 'react';
 import ModalPopUp from '../ui/Modal';
 import EditDiagnosesList from './EditDiagnosesList';
@@ -120,14 +127,40 @@ const EditDiagnosesForm = ({
     onShowForm();
   };
 
+  const mappedDiagnoses = newDiagnoses.map((diagnosis) => (
+    <Box
+      display={'block'}
+      sx={{
+        height: '45px',
+      }}
+      margin={2}
+      key={diagnosis._id}
+    >
+      <Chip
+        label={diagnosis.name}
+        variant='outlined'
+        color='primary'
+        sx={{
+          height: '100%',
+          width: 'auto',
+          fontSize: 20,
+        }}
+      />
+    </Box>
+  ));
+
   return (
     <Fragment>
       <ModalPopUp
         open={modalIsOpen}
-        onSubmitDiagnoses={submitDiagnosesHandler}
         onClose={modalHandler}
-        diagnoses={newDiagnoses}
+        modalBody={mappedDiagnoses}
+        enableSubmit={true}
+        submitTitle='Confirm'
+        enableClose={true}
+        closeTitle='Cancel'
         onSubmit={submitDiagnosesHandler}
+        title='Confirm Diagnoses Selections'
       />
       <Box component='form'>
         <Grid container alignItems='center'>
