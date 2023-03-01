@@ -10,6 +10,7 @@ const GoogleAutoCompleter = ({
   isRequired,
   setAddress,
   clearErrors,
+  setError,
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -20,13 +21,28 @@ const GoogleAutoCompleter = ({
   const autoCompleteRef = useRef();
   const inputRef = useRef();
 
+  const longName = field.value?.longName;
+
+  const validateAddress = useCallback(() => {
+    if (longName !== inputRef.current.value) {
+      setError('address', {
+        type: 'required',
+        message: 'Enter a valid address',
+      });
+    } else {
+      clearErrors('address');
+    }
+  }, [clearErrors, setError, longName]);
+
   const setAddressValues = (value) => {
-    if (value) clearErrors('address');
+    clearErrors('address');
+
     let number;
     let address;
     let city;
     let state;
     let zip;
+    let country;
     for (const component of value.address_components) {
       const componentType = component.types[0];
 
@@ -55,17 +71,24 @@ const GoogleAutoCompleter = ({
           zip = `${component.long_name}`;
           break;
         }
+        case 'country': {
+          country = component.short_name;
+          break;
+        }
 
         default: {
           break;
         }
       }
     }
+
     const patientAddress = {
+      longName: `${number} ${address}, ${city}, ${state}, ${country}A`,
       address: `${number} ${address}`,
       city,
       state,
       zip,
+      country,
     };
     setAddress('address', patientAddress);
   };
@@ -111,7 +134,9 @@ const GoogleAutoCompleter = ({
       required={isRequired}
       type='input'
       fullWidth
+      onBlur={validateAddress}
       inputRef={inputRef}
+      defaultValue={field.value?.longName}
       label={label}
       name={field.name}
       error={fieldState.invalid}

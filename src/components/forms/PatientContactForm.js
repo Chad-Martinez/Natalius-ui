@@ -3,8 +3,9 @@ import { Typography, Grid } from '@mui/material';
 import InputField from '../ui/inputs/InputField';
 import MaskedInput from '../ui/inputs/MaskedInput';
 import GoogleAutoCompleter from './GoogleAutocompeter';
+import { emailValidator } from '../../util/helpers';
 
-const PatientContactForm = ({ control, setValue, clearErrors }) => {
+const PatientContactForm = ({ control, setValue, clearErrors, setError }) => {
   return (
     <Fragment>
       <Typography marginY={2} component='h1' variant='h6' color='primary'>
@@ -29,9 +30,15 @@ const PatientContactForm = ({ control, setValue, clearErrors }) => {
         <Grid item xs={2}>
           <InputField
             label={'Middle Initial'}
-            name={'mi'}
+            name={'middleInitial'}
             control={control}
             isRequired={false}
+            rules={{
+              maxLength: {
+                value: 2,
+                message: 'No more than 2 letters',
+              },
+            }}
           />
         </Grid>
         <Grid item xs={5}>
@@ -44,6 +51,24 @@ const PatientContactForm = ({ control, setValue, clearErrors }) => {
               required: {
                 value: true,
                 message: 'Patient requires a last name',
+              },
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <GoogleAutoCompleter
+            label={'Address'}
+            setAddress={setValue}
+            name={'address'}
+            control={control}
+            isRequired={true}
+            clearErrors={clearErrors}
+            setError={setError}
+            rules={{
+              required: {
+                value: true,
+                message: 'Please enter a valid address',
               },
             }}
           />
@@ -71,25 +96,8 @@ const PatientContactForm = ({ control, setValue, clearErrors }) => {
                 message: 'Please enter an email',
               },
               pattern: {
-                value:
-                  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                value: emailValidator,
                 message: 'Please enter a valid email',
-              },
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <GoogleAutoCompleter
-            label={'Address'}
-            setAddress={setValue}
-            name={'address'}
-            control={control}
-            isRequired={true}
-            clearErrors={clearErrors}
-            rules={{
-              required: {
-                value: true,
-                message: 'Please enter a valid address',
               },
             }}
           />

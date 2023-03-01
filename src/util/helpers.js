@@ -1,3 +1,6 @@
+export const emailValidator =
+  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 export const validateEmailHelper = (email) => {
   let isValidEmail = false;
   if (
@@ -24,27 +27,27 @@ export const validatePasswordHelper = (password) => {
 
 export const ETHNICITIES = [
   {
-    id: 'E1',
+    id: 'American Indian or Alaska Native',
     item: 'American Indian or Alaska Native',
   },
   {
-    id: 'E2',
+    id: 'Asian',
     item: 'Asian',
   },
   {
-    id: 'E3',
+    id: 'Black or African American',
     item: 'Black or African American',
   },
   {
-    id: 'E4',
+    id: 'Hispanic or Latino',
     item: 'Hispanic or Latino',
   },
   {
-    id: 'E5',
+    id: 'Native Hawaiian or Pacific Islander',
     item: 'Native Hawaiian or Pacific Islander',
   },
   {
-    id: 'E6',
+    id: 'White',
     item: 'White',
   },
 ];

@@ -4,8 +4,9 @@ import InputField from '../ui/inputs/InputField';
 import SelectInput from '../ui/inputs/SelectInput';
 import DatePicker from '../ui/inputs/DatePicker';
 import { Fragment } from 'react';
+import dayjs from 'dayjs';
 
-const PatientMedicalInfoForm = ({ control, setValue }) => {
+const PatientMedicalInfoForm = ({ control, setValue, setError, getValues }) => {
   const handleCalculateAge = (value) => {
     const today = new Date();
     const dob = new Date(value);
@@ -14,17 +15,49 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
     if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
       age--;
     }
-    if (age <= 0) {
-      age = 0;
+
+    if (age <= 0 || age > 110) {
+      age = null;
     }
     setValue('age', age);
   };
 
-  const gender = [
+  const handleValidateAge = (value) => {
+    const currentYear = dayjs().year();
+    const birthYear = dayjs(value).year();
+    const isTooOld = currentYear - birthYear;
+    if (
+      dayjs(value).isValid() &&
+      Date.parse(value) < Date.now() &&
+      isTooOld <= 110
+    ) {
+      return true;
+    } else {
+      return 'Invalid Date';
+    }
+  };
+
+  const handleValidateHeight = () => {
+    if (Number(getValues('heightFeet')) === 0) {
+      if (Number(getValues('heightInches')) > 0) return true;
+      else
+        return setError('heightInches', {
+          type: 'Inches Error',
+          message: 'Must be at least 1 inch',
+        });
+    }
+  };
+
+  const handleValidateWeight = () => {
+    if (Number(getValues('weight')) > 0) return true;
+    else return 'Must be at least 1lb';
+  };
+
+  const genderOptions = [
     { id: 'Male', item: 'Male' },
     { id: 'Female', item: 'Female' },
   ];
-  const smoker = [
+  const smokerOptions = [
     { id: 'Yes', item: 'Yes' },
     { id: 'No', item: 'No' },
   ];
@@ -54,11 +87,12 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
             name='dob'
             label='DOB'
             onCustomValidate={handleCalculateAge}
-            baseRules={{
+            rules={{
               required: {
                 value: true,
                 message: 'DOB required',
               },
+              validate: handleValidateAge,
             }}
           />
         </Grid>
@@ -68,18 +102,7 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
             name={'age'}
             type='number'
             control={control}
-            isRequired={true}
-            rules={{
-              required: {
-                value: true,
-                message: 'Age required',
-              },
-            }}
             disabled={true}
-            inputProps={{
-              min: 0,
-              max: 110,
-            }}
           />
         </Grid>
         <Grid item xs={2}>
@@ -94,8 +117,7 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
               },
             }}
             label='Gender'
-            listArray={gender}
-            autoCompleter={true}
+            listArray={genderOptions}
           />
         </Grid>
         <Grid item xs={2}>
@@ -110,8 +132,7 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
               },
             }}
             label='Smoker'
-            listArray={smoker}
-            autoCompleter={true}
+            listArray={smokerOptions}
           />
         </Grid>
         <Grid item xs={2}>
@@ -130,6 +151,7 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
                 value: 10,
                 message: 'Feet must be less than 10',
               },
+              validate: handleValidateHeight,
             }}
             inputProps={{
               min: 0,
@@ -149,14 +171,11 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
                 value: true,
                 message: 'Height required',
               },
-              min: {
-                value: 0,
-                message: 'Inches must be between 0-12',
-              },
               max: {
                 value: 12,
-                message: 'Inches must be between 0-12',
+                message: 'Cannot exceed 12',
               },
+              validate: handleValidateHeight,
             }}
             inputProps={{
               min: 0,
@@ -176,6 +195,10 @@ const PatientMedicalInfoForm = ({ control, setValue }) => {
                 value: true,
                 message: 'Weight required',
               },
+              validate: handleValidateWeight,
+            }}
+            inputProps={{
+              min: 1,
             }}
           />
         </Grid>
