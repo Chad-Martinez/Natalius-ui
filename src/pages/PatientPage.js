@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadPatientById } from '../store/patient-actions';
 import { useEffect } from 'react';
@@ -12,6 +12,7 @@ import Loader from '../components/ui/Loader';
 
 const PatientPage = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const history = useHistory();
   const dispatch = useDispatch();
   const patient = useSelector(
     (state) => state.persistedReducer.patients.patient
@@ -24,6 +25,13 @@ const PatientPage = () => {
     dispatch(loadPatientById(patientId));
     setIsLoading(false);
   }, [patientId, dispatch, _id]);
+
+  const handleEditPatient = () => {
+    history.push('/patient/patient-form', {
+      patient: patient,
+    });
+  };
+
   return (
     <>
       <Grid
@@ -59,7 +67,10 @@ const PatientPage = () => {
                 }}
               />
             </Grid>
-            <PatientProfile patient={patient} />
+            <PatientProfile
+              patient={patient}
+              onEditPatient={handleEditPatient}
+            />
             <Vitals patient={patient} />
             <Diagnoses patientId={patientId} />
           </Fragment>

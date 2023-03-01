@@ -5,9 +5,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { loadPatients } from '../store/patient-actions';
 import PatientsTable from '../components/patient/PatientsTable';
 
-// refactor table to its own table component
-// add a stick header to the table
-
 const PatientsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
