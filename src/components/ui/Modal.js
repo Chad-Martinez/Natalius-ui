@@ -7,6 +7,7 @@ import {
   Button,
   Dialog,
   DialogTitle,
+  DialogContent,
 } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -20,8 +21,11 @@ function ModalPopUp({
   modalBody,
   enableSubmit,
   submitTitle,
+  submitDisabled,
   enableClose,
   closeTitle,
+  dialogSize,
+  warning,
 }) {
   const handleClose = () => {
     onClose();
@@ -33,12 +37,24 @@ function ModalPopUp({
   };
 
   return (
-    <Dialog onClose={handleClose} open={open} TransitionComponent={Transition}>
-      <DialogTitle color='primary' fontSize={28}>
+    <Dialog
+      fullWidth={dialogSize ? true : false}
+      maxWidth={dialogSize || null}
+      onClose={handleClose}
+      open={open}
+      TransitionComponent={Transition}
+    >
+      <DialogTitle
+        fontSize={28}
+        sx={{
+          backgroundColor: warning ? '#d32f2f' : '',
+          color: warning ? 'white' : '#1976d2',
+        }}
+      >
         {title}
       </DialogTitle>
       <Container disableGutters={true}>
-        {modalBody}
+        <DialogContent>{modalBody}</DialogContent>
         <Box
           sx={{
             display: 'flex',
@@ -51,6 +67,7 @@ function ModalPopUp({
             <Button
               type='button'
               variant='outlined'
+              color={warning ? 'error' : 'primary'}
               sx={{
                 marginRight: 1,
               }}
@@ -60,7 +77,15 @@ function ModalPopUp({
             </Button>
           )}
           {enableSubmit && (
-            <Button variant='contained' onClick={submitHandler}>
+            <Button
+              sx={{
+                backgroundColor: warning ? '#d32f2f' : '',
+              }}
+              color={warning ? 'warning' : 'primary'}
+              variant='contained'
+              disabled={submitDisabled}
+              onClick={submitHandler}
+            >
               {submitTitle}
             </Button>
           )}

@@ -50,7 +50,7 @@ const PatientPage = () => {
           <Fragment>
             <Grid
               xs={12}
-              md={4}
+              md={3}
               item
               sx={{
                 display: 'flex',
@@ -58,10 +58,10 @@ const PatientPage = () => {
               }}
             >
               <Avatar
-                alt='avatar placeholder'
-                src={defaultAvatar}
+                alt='patient'
+                src={patient.photo?.url || defaultAvatar}
                 sx={{
-                  height: '100%',
+                  height: 'auto',
                   width: '100%',
                   border: 2,
                 }}
