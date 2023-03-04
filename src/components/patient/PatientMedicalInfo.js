@@ -1,5 +1,6 @@
 import { Grid, Box, Typography } from '@mui/material';
 import { Fragment } from 'react';
+import dayjs from 'dayjs';
 
 const PatientMedicalInfo = ({ medicalInfo }) => {
   const { ethnicity, heightFeet, heightInches, weight, dob, age, smoker } =
@@ -38,7 +39,7 @@ const PatientMedicalInfo = ({ medicalInfo }) => {
         </Grid>
         <Grid xs={3} item>
           <Typography fontSize={20} color='#000033'>
-            DOB: {dob}
+            DOB: {dayjs(dob).format('MM/DD/YYYY')}
           </Typography>
         </Grid>
         <Grid xs={3} item>

@@ -11,7 +11,7 @@ const PatientProfile = ({ patient, onEditPatient }) => {
     <Grid
       container
       xs={12}
-      md={8}
+      md={9}
       item
       paddingLeft={2}
       alignContent='flex-start'
