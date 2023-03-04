@@ -66,25 +66,13 @@ export const addPatient = (payload, push) => {
 export const updatePatient = (patientData, push) => {
   return async (dispatch) => {
     try {
-      const updatedPatient = {
-        _id: patientData.patientId,
-        ...patientData.patient,
-        dateCreated: dayjs(patientData.dateCreated).toString(),
-        dateUpdated: dayjs(patientData.patient.dateUpdated).toString(),
-        medicalInfo: {
-          _id: patientData.patient.medicalInfo,
-          ...patientData.medInfo,
-          dob: dayjs(patientData.medInfo.dob).format('MM/DD/YYYY'),
-          dateCreated: dayjs(patientData.dateCreated).toString(),
-          dateUpdated: dayjs(patientData.patient.dateUpdated).toString(),
-        },
-      };
       const response = await updateCurrentPatient(patientData);
-      dispatch(patientActions.setPatient(updatedPatient));
-      toast.success(response.data.message, { toastId: 'update-patient' });
-      push(`/patient/view/${updatedPatient._id}`);
+      const { patient, message } = response.data;
+      dispatch(patientActions.setPatient(patient));
+      toast.success(message, { toastId: 'update-patient' });
+      push(`/patient/view/${patient._id}`);
     } catch (error) {
-      console.log('ADD PATIENT ERROR ', error);
+      console.log('UPDATE PATIENT ERROR ', error);
       if (error.response.status === 401) return;
       toast.error(error.response.data.message, {
         toastId: 'update-patient-error',

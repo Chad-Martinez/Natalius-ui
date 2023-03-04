@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Typography, Container, Box } from '@mui/material';
+import { Grid, Typography, Container, Box, Button } from '@mui/material';
 import { addPatient, updatePatient } from '../store/patient-actions';
 import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
@@ -10,6 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import dayjs from 'dayjs';
 import PatientContactForm from '../components/forms/PatientContactForm';
 import PatientMedicalInfoForm from '../components/forms/PatientMedicalInfoForm';
+import PatientPhotoForm from '../components/forms/PatientPhotoForm';
 
 const PatientFormPage = () => {
   const history = useHistory();
@@ -24,8 +25,11 @@ const PatientFormPage = () => {
     medicalInfo,
     middleInitial,
     phone,
+    photo,
   } = history.location.state?.patient ? history.location.state.patient : {};
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [image, setImage] = useState(photo?.url || null);
+  const [deletePhotoURL, setDeletePhotoURL] = useState(false);
 
   const { handleSubmit, control, setValue, setError, clearErrors, getValues } =
     useForm({
@@ -47,6 +51,8 @@ const PatientFormPage = () => {
       },
     });
 
+  const handleCancel = () => history.goBack();
+
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     const medInfo = {
@@ -62,6 +68,9 @@ const PatientFormPage = () => {
       weight: data.weight,
     };
     const patientData = {
+      photo: { url: photo?.url, key: photo?.key },
+      deletePhoto: deletePhotoURL,
+      patientPhoto: image,
       address: data.address,
       dateCreated: dayjs(dateCreated).toDate() || dayjs().toDate(),
       dateUpdated: dayjs().toDate(),
@@ -72,6 +81,7 @@ const PatientFormPage = () => {
       middleInitial: data.middleInitial,
       phone: data.phone,
     };
+    console.log('PATIENT DATA ', patientData);
 
     if (patientId)
       dispatch(
@@ -101,36 +111,62 @@ const PatientFormPage = () => {
         Patient Form
       </Typography>
       <Box component='form' noValidate>
-        <PatientContactForm
-          control={control}
-          setValue={setValue}
-          clearErrors={clearErrors}
-          setError={setError}
-        />
-        <PatientMedicalInfoForm
-          getValues={getValues}
-          control={control}
-          setValue={setValue}
-          setError={setError}
-          clearErrors={clearErrors}
-        />
-        <Box
-          sx={{
-            display: 'flex',
-            marginY: 3,
-            justifyContent: 'end',
-          }}
-        >
-          <LoadingButton
-            onClick={handleSubmit(onSubmit)}
-            loading={isSubmitting}
-            loadingPosition='end'
-            variant='contained'
-            endIcon={<SendIcon />}
-          >
-            <span>{isSubmitting ? 'Submitting' : 'Submit'}</span>
-          </LoadingButton>
-        </Box>
+        <Grid container spacing={1}>
+          <Grid xs={12} md={4} item>
+            <PatientPhotoForm
+              photoURL={photo?.url}
+              image={image}
+              setImage={setImage}
+              setDeletePhotoURL={setDeletePhotoURL}
+            />
+          </Grid>
+          <Grid xs={12} md={8} item>
+            <PatientContactForm
+              control={control}
+              setValue={setValue}
+              clearErrors={clearErrors}
+              setError={setError}
+            />
+          </Grid>
+          <Grid xs={12} item>
+            <PatientMedicalInfoForm
+              getValues={getValues}
+              control={control}
+              setValue={setValue}
+              setError={setError}
+              clearErrors={clearErrors}
+            />
+          </Grid>
+          <Grid xs={12} item>
+            <Box
+              sx={{
+                display: 'flex',
+                marginY: 3,
+                justifyContent: 'end',
+              }}
+            >
+              <Button
+                sx={{
+                  marginX: 1,
+                }}
+                variant='outlined'
+                type='button'
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+              <LoadingButton
+                onClick={handleSubmit(onSubmit)}
+                loading={isSubmitting}
+                loadingPosition='end'
+                variant='contained'
+                endIcon={<SendIcon />}
+              >
+                <span>{isSubmitting ? 'Submitting' : 'Submit'}</span>
+              </LoadingButton>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );
