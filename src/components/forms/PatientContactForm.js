@@ -29,7 +29,7 @@ const PatientContactForm = ({ control, setValue, clearErrors, setError }) => {
         </Grid>
         <Grid item xs={2}>
           <InputField
-            label={'Middle Initial'}
+            label={'MI'}
             name={'middleInitial'}
             control={control}
             isRequired={false}
