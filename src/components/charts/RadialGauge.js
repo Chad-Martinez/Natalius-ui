@@ -4,6 +4,8 @@ import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import GaugeChart from 'react-gauge-chart';
 
 const RadialGauge = ({ title, data, id }) => {
+  const { percent, change } = data ? data : {};
+
   return (
     <Fragment>
       <GaugeChart
@@ -11,8 +13,9 @@ const RadialGauge = ({ title, data, id }) => {
         nrOfLevels={3}
         colors={['#a6ce39', 'orange', 'red']}
         arcWidth={0.3}
-        percent={0.33}
+        percent={percent || 0}
         textColor={'black'}
+        changeOverPrevious
       />
 
       <Grid container item justifyContent={'center'}>
@@ -21,9 +24,24 @@ const RadialGauge = ({ title, data, id }) => {
             {title}
           </Typography>
         </Grid>
-        <Grid xs={1} container item alignItems={'center'}>
-          <ArrowDownward />
-        </Grid>
+        {change === 'higher' && (
+          <Grid xs={1} container item alignItems={'center'}>
+            <ArrowUpward
+              sx={{
+                color: 'red',
+              }}
+            />
+          </Grid>
+        )}
+        {change === 'lower' && (
+          <Grid xs={1} container item alignItems={'center'}>
+            <ArrowDownward
+              sx={{
+                color: '#3eec43',
+              }}
+            />
+          </Grid>
+        )}
       </Grid>
     </Fragment>
   );

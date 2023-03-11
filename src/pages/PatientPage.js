@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loadPatientById } from '../store/patient-actions';
 import { useEffect } from 'react';
 import { Avatar, Grid } from '@mui/material';
-import defaultAvatar from '../assets/images/avatar-placeholder.webp';
 import PatientProfile from '../components/patient/PatientProfile';
 import Vitals from '../components/patient/Vitals';
 import Diagnoses from '../components/patient/Diagnoses';
@@ -59,11 +58,10 @@ const PatientPage = () => {
             >
               <Avatar
                 alt='patient'
-                src={patient.photo?.url || defaultAvatar}
+                src={patient.photo?.url}
                 sx={{
-                  height: 'auto',
+                  height: '100%',
                   width: '100%',
-                  border: 2,
                 }}
               />
             </Grid>
@@ -71,7 +69,7 @@ const PatientPage = () => {
               patient={patient}
               onEditPatient={handleEditPatient}
             />
-            <Vitals patient={patient} />
+            <Vitals patientId={patientId} />
             <Diagnoses patientId={patientId} />
           </Fragment>
         )}
