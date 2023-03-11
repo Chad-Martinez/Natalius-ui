@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { TableRow, TableCell, Button } from '@mui/material';
+import { TableRow, TableCell, Button, Avatar, Box } from '@mui/material';
 import dayjs from 'dayjs';
 const PatientTableItem = ({ patient }) => {
   const history = useHistory();
@@ -15,13 +15,30 @@ const PatientTableItem = ({ patient }) => {
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell component='th' scope='row'>
-        {`${patient.firstName} ${patient.lastName}`}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar
+            sx={{ marginRight: 1, bgcolor: '#8dbceba1' }}
+            src={patient.photo?.url}
+            alt={`${patient.firstName} ${patient.lastName}`}
+          />
+          {`${patient.firstName} ${patient.lastName}`}
+        </Box>
       </TableCell>
       <TableCell align='right'>{dob}</TableCell>
       <TableCell align='right'>{`${patient.medicalInfo.heightFeet}' ${patient.medicalInfo.heightInches}"`}</TableCell>
       <TableCell align='right'>{patient.medicalInfo.weight}</TableCell>
       <TableCell align='right'>
-        <Button variant='contained' size='small' onClick={viewPatientHandler}>
+        <Button
+          variant='contained'
+          color='info'
+          size='small'
+          onClick={viewPatientHandler}
+        >
           View
         </Button>
       </TableCell>
